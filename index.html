@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Vetex.AI - Your personal Grok-like super AI with cloud sync, persistent memory, chat sharing, voice input & real-time knowledge.">
-    <meta property="og:title" content="Vetex.AI">
-    <meta property="og:description" content="The most beautiful personal AI you own.">
+    <meta name="description" content="Vetex.AI v1.4 Ultra - The most beautiful personal Grok-like super AI website with persistent memory, SFW image generation, TTS, themes, and tons of features.">
+    <meta property="og:title" content="Vetex.AI v1.4 Ultra">
+    <meta property="og:description" content="Your personal super-intelligent AI that remembers everything — now live as a beautiful website.">
     <meta property="og:url" content="https://jeffprogamer.github.io/Vetex.AI/">
     <meta property="og:image" content="https://picsum.photos/id/1015/1200/630">
     <meta name="theme-color" content="#67e8f9">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌌%3C/text%3E%3C/svg%3E">
     <link rel="manifest" href="manifest.json">
-    <title>Vetex.AI - Super Intelligent AI</title>
+    <title>Vetex.AI v1.4 Ultra • Super AI Website</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://js.puter.com/v2/"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
@@ -24,66 +24,44 @@
         .logo-font { font-family: 'Space Grotesk', sans-serif; }
        
         .message-bubble { animation: fadeInUp 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
        
         .typing { animation: typingBlink 1.4s infinite; }
-        @keyframes typingBlink {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
+        @keyframes typingBlink { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
        
         .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #22d3ee; border-radius: 9999px; }
         .custom-scroll::-webkit-scrollbar-thumb:hover { background: #67e8f9; }
        
-        .prose pre {
-            background: #18181b;
-            border-radius: 16px;
-            padding: 20px;
-            overflow-x: auto;
-            border: 1px solid #27272a;
-        }
+        .prose pre { background: #18181b; border-radius: 16px; padding: 20px; overflow-x: auto; border: 1px solid #27272a; }
         .glass { backdrop-filter: blur(16px); }
-       
-        .history-item-active {
-            background: linear-gradient(90deg, #18181b, #27272a);
-            box-shadow: 0 0 0 2px #67e8f9;
-        }
+        .history-item-active { background: linear-gradient(90deg, #18181b, #27272a); box-shadow: 0 0 0 2px #67e8f9; }
        
         .btn-hover { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
         .btn-hover:hover { transform: scale(1.05); }
        
-        .model-badge {
-            font-size: 10px;
-            padding: 1px 6px;
-            background: #22d3ee;
-            color: #0a0a0a;
-            border-radius: 9999px;
-            font-weight: 700;
-        }
+        .model-badge { font-size: 10px; padding: 1px 6px; background: #22d3ee; color: #0a0a0a; border-radius: 9999px; font-weight: 700; }
        
-        .loading-dots span {
-            animation: typingBlink 1.4s infinite;
-        }
-        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+        .generated-image { max-width: 100%; border-radius: 20px; box-shadow: 0 10px 30px -10px rgb(103 232 249 / 0.3); border: 1px solid #27272a; cursor: pointer; transition: transform 0.3s; }
+        .generated-image:hover { transform: scale(1.02); }
        
-        .memory-pill {
-            font-size: 11px;
-            padding: 2px 8px;
-            background: #22d3ee20;
-            color: #67e8f9;
-            border-radius: 9999px;
-        }
+        .message-actions { opacity: 0; transition: opacity 0.2s; }
+        .message:hover .message-actions { opacity: 1; }
+       
+        .quick-prompt { transition: all 0.2s; }
+        .quick-prompt:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgb(103 232 249 / 0.2); }
+       
+        body.light { background-color: rgb(249 250 251); color: rgb(17 24 39); }
+        body.light .bg-zinc-900 { background-color: rgb(255 255 255) !important; }
+        body.light .bg-zinc-800 { background-color: rgb(243 244 246) !important; }
+        body.light .border-zinc-800 { border-color: rgb(229 231 235) !important; }
+        body.light .text-zinc-100 { color: rgb(17 24 39) !important; }
     </style>
 </head>
-<body class="bg-zinc-950 text-zinc-100 overflow-hidden h-screen flex flex-col md:flex-row">
+<body class="bg-zinc-950 text-zinc-100 overflow-hidden h-screen flex flex-col md:flex-row dark">
     <!-- FILE WARNING -->
     <div id="file-warning" class="hidden fixed top-0 left-0 right-0 bg-amber-500 text-black py-3 text-center font-semibold z-[100] text-sm">
-        ⚠️ Sign-in & cloud sync only work on http/https. Open via GitHub Pages or localhost.
+        ⚠️ Cloud sync &amp; image generation work best when opened via https://jeffprogamer.github.io/Vetex.AI/
     </div>
 
     <!-- SIDEBAR -->
@@ -95,7 +73,7 @@
                 <span class="logo-font text-4xl font-bold tracking-[-2px] bg-gradient-to-r from-cyan-300 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">Vetex</span>
                 <span class="block text-[11px] font-mono text-cyan-400 tracking-[3px] -mt-1">.AI</span>
             </div>
-            <div class="ml-auto text-[10px] px-2.5 py-1 bg-emerald-500/10 text-emerald-400 rounded-full font-medium">v1.1</div>
+            <div class="ml-auto text-[10px] px-2.5 py-1 bg-emerald-500/10 text-emerald-400 rounded-full font-medium">v1.4</div>
         </div>
 
         <!-- New Chat -->
@@ -103,6 +81,11 @@
             <button onclick="newChat()" class="w-full py-4 bg-gradient-to-r from-cyan-500 to-violet-500 hover:brightness-110 rounded-3xl flex items-center justify-center gap-3 font-semibold text-lg transition-all active:scale-95 btn-hover shadow-lg">
                 <i class="fa-solid fa-plus"></i> New Conversation
             </button>
+        </div>
+
+        <!-- Quick Prompts -->
+        <div class="px-4 pb-3">
+            <div id="quick-prompts" class="flex gap-2 overflow-x-auto custom-scroll pb-2"></div>
         </div>
 
         <!-- History Search -->
@@ -116,49 +99,56 @@
         <!-- Chat History -->
         <div class="flex-1 overflow-y-auto px-3 space-y-1 custom-scroll" id="history"></div>
 
-        <!-- Memory Status -->
-        <div class="px-4 py-2 border-t border-zinc-800 text-xs flex items-center gap-2 text-cyan-400">
-            <i class="fa-solid fa-brain"></i>
-            <span id="memory-count">0 memories saved</span>
+        <!-- Memory -->
+        <div class="px-4 py-3 border-t border-zinc-800 text-xs flex items-center justify-between text-cyan-400">
+            <div class="flex items-center gap-2">
+                <i class="fa-solid fa-brain"></i>
+                <span id="memory-count">0 memories saved</span>
+            </div>
+            <button onclick="showSettings();switchSettingsTab(1)" class="text-[10px] hover:text-white">Manage</button>
         </div>
 
         <!-- User Panel -->
-        <div id="user-panel" class="mt-auto p-4 border-t border-zinc-800"></div>
+        <div id="user-panel" class="p-4 border-t border-zinc-800"></div>
 
-        <!-- Sidebar Links -->
+        <!-- Bottom Links -->
         <div class="p-4 border-t border-zinc-800 text-xs flex flex-col gap-2 text-zinc-400">
             <button onclick="showSettings()" class="flex items-center gap-2 hover:text-white transition-colors">
                 <i class="fa-solid fa-cog"></i> Settings
             </button>
             <button onclick="showHelp()" class="flex items-center gap-2 hover:text-white transition-colors">
-                <i class="fa-solid fa-circle-question"></i> Help & Shortcuts
+                <i class="fa-solid fa-circle-question"></i> Help &amp; Shortcuts
             </button>
-            <button onclick="exportChats()" class="flex items-center gap-2 hover:text-white transition-colors">
-                <i class="fa-solid fa-download"></i> Export Chats
+            <button onclick="exportData()" class="flex items-center gap-2 hover:text-white transition-colors">
+                <i class="fa-solid fa-download"></i> Export Everything
             </button>
         </div>
     </div>
 
-    <!-- MAIN CHAT AREA -->
+    <!-- MAIN CHAT -->
     <div class="flex-1 flex flex-col min-w-0">
         <!-- Top Bar -->
         <div class="h-16 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-lg flex items-center px-6 justify-between z-50 glass">
             <div class="flex items-center gap-4">
                 <div id="chat-title" class="font-semibold text-xl tracking-tight">Vetex.AI</div>
-                <span id="chat-model-badge" class="model-badge hidden">Vetex 1.1</span>
+                <span id="chat-model-badge" class="model-badge hidden">v1.4</span>
             </div>
            
             <div class="flex items-center gap-6 text-xl">
                 <select id="model" onchange="changeModel()" class="bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-2 text-sm focus:outline-none focus:border-cyan-400 cursor-pointer">
-                    <option value="vetex-1.1" selected>Vetex 1.1 (Flagship + Memory)</option>
-                    <option value="x-ai/grok-4">Grok-4 (Max Power)</option>
+                    <option value="vetex-1.4" selected>Vetex 1.4 Ultra</option>
+                    <option value="x-ai/grok-4">Grok-4 Max</option>
                     <option value="x-ai/grok-4-fast">Grok-4 Fast</option>
                     <option value="deepseek/deepseek-r1">DeepSeek R1</option>
-                    <option value="openai/gpt-4o">GPT-4o (via Puter)</option>
+                    <option value="openai/gpt-4o">GPT-4o</option>
                 </select>
                
-                <button onclick="toggleVoice()" id="voice-btn" class="text-cyan-400 hover:text-cyan-300 transition-colors">
+                <button onclick="toggleVoiceInput()" id="voice-btn" class="text-cyan-400 hover:text-cyan-300 transition-colors" title="Voice Input (Ctrl+Shift+V)">
                     <i class="fa-solid fa-microphone"></i>
+                </button>
+               
+                <button onclick="showImageGenModal()" class="text-purple-400 hover:text-purple-300 transition-colors" title="SFW Image Generator">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
                 </button>
                
                 <button onclick="shareCurrentChat()" class="text-cyan-400 hover:text-cyan-300 transition-colors">
@@ -181,7 +171,7 @@
         <!-- Input -->
         <div class="p-6 border-t border-zinc-800 bg-zinc-900">
             <div class="max-w-4xl mx-auto relative">
-                <textarea id="input" rows="1" class="w-full bg-zinc-800 border border-zinc-700 focus:border-cyan-400 rounded-3xl py-6 px-8 text-lg resize-y min-h-[68px] max-h-[200px] outline-none pr-24 leading-relaxed" placeholder="Message Vetex 1.1... (Shift + Enter for new line)"></textarea>
+                <textarea id="input" rows="1" class="w-full bg-zinc-800 border border-zinc-700 focus:border-cyan-400 rounded-3xl py-6 px-8 text-lg resize-y min-h-[68px] max-h-[200px] outline-none pr-32 leading-relaxed" placeholder="Message Vetex 1.4... or type /image [your idea]"></textarea>
                
                 <button onclick="sendMessage()" class="absolute right-5 bottom-5 w-12 h-12 bg-gradient-to-br from-cyan-400 to-violet-500 rounded-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-2xl shadow-cyan-500/50">
                     <i class="fa-solid fa-paper-plane text-white text-xl"></i>
@@ -189,318 +179,352 @@
             </div>
            
             <div class="text-center text-[10px] text-zinc-500 mt-5 flex items-center justify-center gap-6">
-                <span>Vetex.AI 1.1 • Powered by Puter + Grok-4 • Persistent Memory Enabled</span>
+                <span>Vetex.AI v1.4 Ultra • Live Website • Persistent Memory • SFW Images • TTS • Everything Cloud-Synced</span>
             </div>
         </div>
     </div>
 
-    <!-- ====================== ENHANCED SETTINGS MODAL ====================== -->
+    <!-- SETTINGS MODAL -->
     <div id="settings-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[200]">
-        <div class="bg-zinc-900 rounded-3xl w-full max-w-2xl mx-4 overflow-hidden max-h-[90vh] flex flex-col">
+        <div class="bg-zinc-900 rounded-3xl w-full max-w-3xl mx-4 overflow-hidden max-h-[92vh] flex flex-col">
             <div class="p-6 border-b border-zinc-800 flex items-center justify-between">
-                <div class="text-2xl font-semibold flex items-center gap-3">
-                    <i class="fa-solid fa-sliders"></i> Settings
-                </div>
-                <button onclick="hideSettings()" class="text-3xl leading-none text-zinc-400 hover:text-white">×</button>
+                <div class="text-2xl font-semibold">Settings</div>
+                <button onclick="hideSettings()" class="text-4xl leading-none text-zinc-400 hover:text-white">×</button>
             </div>
            
-            <div class="flex-1 overflow-auto p-6 space-y-10 custom-scroll">
-                <!-- TAB NAV -->
-                <div class="flex border-b border-zinc-800 text-sm">
-                    <button onclick="switchSettingsTab(0)" class="tab-btn px-6 py-3 border-b-2 border-cyan-400 text-cyan-400 font-medium">General</button>
-                    <button onclick="switchSettingsTab(1)" class="tab-btn px-6 py-3 text-zinc-400 hover:text-white">Memory Vault</button>
-                    <button onclick="switchSettingsTab(2)" class="tab-btn px-6 py-3 text-zinc-400 hover:text-white">AI Behavior</button>
-                    <button onclick="switchSettingsTab(3)" class="tab-btn px-6 py-3 text-zinc-400 hover:text-white">Data</button>
-                </div>
+            <div class="flex border-b border-zinc-800 text-sm font-medium overflow-x-auto">
+                <button onclick="switchSettingsTab(0)" class="tab-btn px-8 py-4 border-b-2 border-cyan-400 text-cyan-400 whitespace-nowrap">General</button>
+                <button onclick="switchSettingsTab(1)" class="tab-btn px-8 py-4 text-zinc-400 hover:text-white whitespace-nowrap">Memory Vault</button>
+                <button onclick="switchSettingsTab(2)" class="tab-btn px-8 py-4 text-zinc-400 hover:text-white whitespace-nowrap">Appearance</button>
+                <button onclick="switchSettingsTab(3)" class="tab-btn px-8 py-4 text-zinc-400 hover:text-white whitespace-nowrap">AI Behavior</button>
+                <button onclick="switchSettingsTab(4)" class="tab-btn px-8 py-4 text-zinc-400 hover:text-white whitespace-nowrap">Image Gen</button>
+                <button onclick="switchSettingsTab(5)" class="tab-btn px-8 py-4 text-zinc-400 hover:text-white whitespace-nowrap">Data</button>
+            </div>
 
-                <!-- GENERAL TAB -->
-                <div id="tab-0" class="settings-tab">
-                    <div class="grid grid-cols-2 gap-6">
-                        <div>
-                            <label class="text-sm text-zinc-400 block mb-2">Default Model</label>
-                            <select id="default-model" onchange="saveDefaultModel()" class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl py-3 px-5">
-                                <option value="vetex-1.1">Vetex 1.1 (Flagship + Memory)</option>
-                                <option value="x-ai/grok-4">Grok-4</option>
-                                <option value="x-ai/grok-4-fast">Grok-4 Fast</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="text-sm text-zinc-400 block mb-2">Auto Title Chats</label>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="auto-title" checked onchange="saveSettings()" class="sr-only peer">
-                                <div class="w-11 h-6 bg-zinc-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-cyan-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-cyan-500"></div>
-                            </label>
-                        </div>
-                    </div>
+            <!-- TAB CONTENTS -->
+            <div id="tab-0" class="settings-tab p-8 space-y-8">
+                <div>
+                    <label class="text-sm text-zinc-400 mb-2 block">Default Model</label>
+                    <select id="default-model" onchange="saveDefaultModel()" class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl py-4 px-6">
+                        <option value="vetex-1.4">Vetex 1.4 Ultra</option>
+                        <option value="x-ai/grok-4">Grok-4</option>
+                    </select>
                 </div>
-
-                <!-- MEMORY VAULT TAB -->
-                <div id="tab-1" class="settings-tab hidden">
-                    <div class="flex gap-3 mb-4">
-                        <input id="new-memory" type="text" placeholder="Add something I should always remember (e.g. I live in Dammam, I love sci-fi...)" class="flex-1 bg-zinc-800 border border-zinc-700 focus:border-cyan-400 rounded-2xl py-3 px-5 text-sm outline-none">
-                        <button onclick="addMemoryFromInput()" class="px-6 bg-gradient-to-r from-cyan-500 to-violet-500 rounded-2xl font-medium">Add Fact</button>
-                    </div>
-                   
-                    <div id="memory-list" class="space-y-2 max-h-80 overflow-auto custom-scroll"></div>
-                   
-                    <button onclick="clearMemories()" class="mt-6 w-full py-3 text-red-400 hover:bg-red-500/10 rounded-2xl transition-colors">
-                        🗑️ Clear All Memories
-                    </button>
+                <div class="flex items-center justify-between">
+                    <div>Auto-generate chat titles</div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="auto-title" checked onchange="saveSettings()" class="sr-only peer">
+                        <div class="w-14 h-7 bg-zinc-700 rounded-full peer peer-checked:bg-cyan-500"></div>
+                        <div class="absolute left-1 top-1 bg-white w-5 h-5 rounded-full transition peer-checked:translate-x-7"></div>
+                    </label>
                 </div>
-
-                <!-- AI BEHAVIOR TAB -->
-                <div id="tab-2" class="settings-tab hidden">
-                    <label class="text-sm text-zinc-400 block mb-2">Custom System Instructions (overrides default personality)</label>
-                    <textarea id="custom-instructions" rows="6" class="w-full bg-zinc-800 border border-zinc-700 focus:border-cyan-400 rounded-3xl p-6 text-sm resize-none" placeholder="You are my personal AI assistant who always remembers I live in Dammam and love coding..."></textarea>
-                   
-                    <div class="mt-8">
-                        <label class="text-sm text-zinc-400 block mb-3">Creativity (Temperature)</label>
-                        <input type="range" id="temperature" min="0" max="2" step="0.1" value="0.8" oninput="document.getElementById('temp-val').textContent=this.value" class="w-full accent-cyan-400">
-                        <div class="flex justify-between text-xs text-zinc-500">
-                            <span>Precise</span>
-                            <span id="temp-val">0.8</span>
-                            <span>Creative</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- DATA TAB -->
-                <div id="tab-3" class="settings-tab hidden">
-                    <div class="grid grid-cols-2 gap-4">
-                        <button onclick="exportChats()" class="py-6 bg-zinc-800 hover:bg-zinc-700 rounded-3xl flex flex-col items-center gap-2">
-                            <i class="fa-solid fa-download text-2xl"></i>
-                            <span class="font-medium">Export All Chats</span>
-                        </button>
-                        <button onclick="importChatsPrompt()" class="py-6 bg-zinc-800 hover:bg-zinc-700 rounded-3xl flex flex-col items-center gap-2">
-                            <i class="fa-solid fa-upload text-2xl"></i>
-                            <span class="font-medium">Import Chats</span>
-                        </button>
-                    </div>
-                   
-                    <button onclick="clearAllData()" class="mt-6 w-full py-4 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-3xl font-medium transition-colors">
-                        Delete ALL Local Data (Chats + Memories)
-                    </button>
+                <div class="flex items-center justify-between">
+                    <div>Enable Text-to-Speech</div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="tts-enabled" checked onchange="saveSettings()" class="sr-only peer">
+                        <div class="w-14 h-7 bg-zinc-700 rounded-full peer peer-checked:bg-cyan-500"></div>
+                        <div class="absolute left-1 top-1 bg-white w-5 h-5 rounded-full transition peer-checked:translate-x-7"></div>
+                    </label>
                 </div>
             </div>
-           
-            <div class="p-6 border-t border-zinc-800 flex justify-end gap-3">
-                <button onclick="hideSettings()" class="px-8 py-3 bg-white/10 hover:bg-white/20 rounded-2xl">Close</button>
-                <button onclick="saveAllSettings();hideSettings()" class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-violet-500 rounded-2xl font-semibold">Save All Changes</button>
+
+            <div id="tab-1" class="settings-tab hidden p-8">
+                <div class="flex gap-3 mb-6">
+                    <input id="new-memory-input" type="text" placeholder="I live in Dammam, I love coding, my favorite color is cyan..." class="flex-1 bg-zinc-800 border border-zinc-700 rounded-2xl px-6 py-4 text-lg outline-none">
+                    <button onclick="addMemoryFromSettings()" class="px-10 bg-gradient-to-r from-cyan-500 to-violet-500 rounded-2xl font-semibold">Add to Memory</button>
+                </div>
+                <div id="memory-list-settings" class="space-y-3 max-h-96 overflow-auto custom-scroll pr-2"></div>
+            </div>
+
+            <div id="tab-2" class="settings-tab hidden p-8 space-y-8">
+                <div>
+                    <label class="text-sm text-zinc-400 mb-3 block">Theme</label>
+                    <div class="grid grid-cols-3 gap-4">
+                        <button onclick="setTheme('dark')" class="theme-btn p-6 rounded-3xl border-2 border-transparent bg-zinc-800 hover:border-cyan-400 text-center">🌑 Dark</button>
+                        <button onclick="setTheme('light')" class="theme-btn p-6 rounded-3xl border-2 border-transparent bg-zinc-800 hover:border-cyan-400 text-center">☀️ Light</button>
+                        <button onclick="setTheme('auto')" class="theme-btn p-6 rounded-3xl border-2 border-transparent bg-zinc-800 hover:border-cyan-400 text-center">Auto</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-3" class="settings-tab hidden p-8">
+                <textarea id="custom-instructions" rows="8" class="w-full bg-zinc-800 border border-zinc-700 rounded-3xl p-6 text-lg resize-y" placeholder="You are my helpful coding buddy who always speaks in a fun way..."></textarea>
+            </div>
+
+            <div id="tab-4" class="settings-tab hidden p-8">
+                <div class="bg-purple-500/10 border border-purple-500/30 rounded-3xl p-6 mb-8">
+                    <strong>All images are 100% SFW</strong> — safety filter is permanently enabled.
+                </div>
+                <label class="text-sm text-zinc-400 block mb-2">Preferred Image Style</label>
+                <select id="default-image-style" class="w-full bg-zinc-800 border border-zinc-700 rounded-2xl py-4 px-6">
+                    <option value="">Natural</option>
+                    <option value="cinematic">Cinematic</option>
+                    <option value="oil painting">Oil Painting</option>
+                    <option value="cyberpunk">Cyberpunk</option>
+                    <option value="anime">Anime</option>
+                </select>
+            </div>
+
+            <div id="tab-5" class="settings-tab hidden p-8 space-y-6">
+                <button onclick="exportData()" class="w-full py-8 bg-zinc-800 hover:bg-zinc-700 rounded-3xl text-lg font-medium flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-download"></i> Export All Data (Chats + Memory)
+                </button>
+                <button onclick="importDataPrompt()" class="w-full py-8 bg-zinc-800 hover:bg-zinc-700 rounded-3xl text-lg font-medium flex items-center justify-center gap-3">
+                    <i class="fa-solid fa-upload"></i> Import Backup
+                </button>
+                <button onclick="clearAllData()" class="w-full py-8 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-3xl font-medium">Delete All Data Permanently</button>
+            </div>
+
+            <div class="p-6 border-t border-zinc-800 flex justify-end gap-4">
+                <button onclick="hideSettings()" class="px-10 py-4 bg-white/10 hover:bg-white/20 rounded-2xl">Close</button>
+                <button onclick="saveAllSettings();hideSettings()" class="px-10 py-4 bg-gradient-to-r from-cyan-500 to-violet-500 rounded-2xl font-semibold">Save Everything</button>
             </div>
         </div>
     </div>
 
-    <!-- HELP MODAL (unchanged) -->
-    <div id="help-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[200]">
-        <div class="bg-zinc-900 rounded-3xl w-full max-w-lg mx-4 overflow-hidden">
-            <div class="p-6 border-b border-zinc-800 flex justify-between items-center">
-                <div class="text-xl font-semibold flex items-center gap-2">
-                    <i class="fa-solid fa-keyboard"></i> Keyboard Shortcuts
-                </div>
-                <button onclick="hideHelp()" class="text-3xl leading-none text-zinc-400">×</button>
+    <!-- IMAGE MODAL -->
+    <div id="image-gen-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[300]">
+        <div class="bg-zinc-900 rounded-3xl w-full max-w-lg mx-4 p-8">
+            <div class="flex justify-between mb-6">
+                <div class="text-2xl font-semibold">SFW Image Generator</div>
+                <button onclick="hideImageGenModal()" class="text-3xl text-zinc-400">×</button>
             </div>
-            <div class="p-6 space-y-6 text-sm">
-                <div class="grid grid-cols-2 gap-y-4 gap-x-8">
-                    <div class="flex justify-between"><span class="text-zinc-400">Send message</span><span class="font-mono">Enter</span></div>
-                    <div class="flex justify-between"><span class="text-zinc-400">New line</span><span class="font-mono">Shift + Enter</span></div>
-                    <div class="flex justify-between"><span class="text-zinc-400">New chat</span><span class="font-mono">Ctrl/Cmd + K</span></div>
-                    <div class="flex justify-between"><span class="text-zinc-400">Voice input</span><span class="font-mono">Ctrl/Cmd + Shift + V</span></div>
-                    <div class="flex justify-between"><span class="text-zinc-400">Focus input</span><span class="font-mono">/</span></div>
-                    <div class="flex justify-between"><span class="text-zinc-400">Open Settings</span><span class="font-mono">Ctrl/Cmd + ,</span></div>
-                </div>
+            <input id="image-prompt" class="w-full bg-zinc-800 border border-zinc-700 rounded-3xl py-5 px-7 text-lg mb-6" placeholder="A serene mountain lake at sunrise">
+            <div class="grid grid-cols-2 gap-4">
+                <select id="img-style" class="bg-zinc-800 border border-zinc-700 rounded-2xl py-3 px-4">
+                    <option value="">Natural</option>
+                    <option value="cinematic">Cinematic</option>
+                    <option value="anime">Anime</option>
+                </select>
+                <button onclick="generateImageFromModal()" class="bg-gradient-to-r from-purple-500 to-cyan-500 py-4 rounded-2xl font-semibold">Generate Image</button>
+            </div>
+            <p class="text-center text-xs text-zinc-500 mt-4">Always SFW • Powered by Puter AI</p>
+        </div>
+    </div>
+
+    <!-- HELP MODAL -->
+    <div id="help-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[200]">
+        <div class="bg-zinc-900 rounded-3xl w-full max-w-lg mx-4 p-8">
+            <div class="text-2xl font-semibold mb-6">Keyboard Shortcuts</div>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+                <div class="flex justify-between"><span class="text-zinc-400">Send</span><span class="font-mono">Enter</span></div>
+                <div class="flex justify-between"><span class="text-zinc-400">New Chat</span><span class="font-mono">Ctrl+K</span></div>
+                <div class="flex justify-between"><span class="text-zinc-400">Voice Input</span><span class="font-mono">Ctrl+Shift+V</span></div>
+                <div class="flex justify-between"><span class="text-zinc-400">Image Gen</span><span class="font-mono">Ctrl+I</span></div>
+                <div class="flex justify-between"><span class="text-zinc-400">Settings</span><span class="font-mono">Ctrl+,</span></div>
             </div>
         </div>
     </div>
 
     <script>
         // ================================================
-        // Vetex.AI v1.1 - WITH PERSISTENT MEMORY
+        // Vetex.AI v1.4 Ultra - Full Website Version
         // ================================================
-        tailwind.config = { content: [] };
-
-        // ====================== STATE ======================
         let chats = JSON.parse(localStorage.getItem('vetexChats')) || [];
         let userMemories = JSON.parse(localStorage.getItem('vetexMemories')) || [];
         let customInstructions = localStorage.getItem('vetexCustomInstructions') || "";
         let currentChatId = null;
-        let currentModel = "vetex-1.1";
-        let defaultModel = localStorage.getItem('vetexDefaultModel') || "vetex-1.1";
+        let currentModel = "vetex-1.4";
+        let defaultModel = localStorage.getItem('vetexDefaultModel') || "vetex-1.4";
         let autoTitle = localStorage.getItem('vetexAutoTitle') !== "false";
+        let ttsEnabled = localStorage.getItem('vetexTTS') !== "false";
+        let currentTheme = localStorage.getItem('vetexTheme') || "dark";
         let currentUser = null;
-        let isListening = false;
-        let recognition = null;
         let isProcessing = false;
-        let currentSettingsTab = 0;
+        let recognition = null;
 
-        // DOM
         const messagesDiv = document.getElementById('messages');
-        const historyDiv = document.getElementById('history');
-        const userPanel = document.getElementById('user-panel');
         const input = document.getElementById('input');
-        const fileWarning = document.getElementById('file-warning');
-        const chatTitleEl = document.getElementById('chat-title');
-        const modelSelect = document.getElementById('model');
-        const settingsModal = document.getElementById('settings-modal');
-        const helpModal = document.getElementById('help-modal');
-        const historySearch = document.getElementById('history-search');
-        const memoryCountEl = document.getElementById('memory-count');
 
-        // ====================== STORAGE ======================
         async function saveAll() {
             localStorage.setItem('vetexChats', JSON.stringify(chats));
             localStorage.setItem('vetexMemories', JSON.stringify(userMemories));
             localStorage.setItem('vetexCustomInstructions', customInstructions);
             localStorage.setItem('vetexDefaultModel', defaultModel);
             localStorage.setItem('vetexAutoTitle', autoTitle);
-
+            localStorage.setItem('vetexTTS', ttsEnabled);
+            localStorage.setItem('vetexTheme', currentTheme);
             if (currentUser) {
-                try {
-                    await puter.kv.set('vetex-chats', JSON.stringify(chats));
-                    await puter.kv.set('vetex-memories', JSON.stringify(userMemories));
-                    await puter.kv.set('vetex-custom-instructions', customInstructions);
-                } catch(e) {}
+                try { await puter.kv.set('vetex-all', JSON.stringify({chats, userMemories, customInstructions})); } catch(e){}
             }
         }
 
-        async function loadFromCloud() {
-            if (!currentUser) return;
-            try {
-                const c = await puter.kv.get('vetex-chats');
-                if (c) chats = JSON.parse(c);
-                const m = await puter.kv.get('vetex-memories');
-                if (m) userMemories = JSON.parse(m);
-                const ci = await puter.kv.get('vetex-custom-instructions');
-                if (ci) customInstructions = ci;
-            } catch(e) {}
-        }
-
-        // ====================== AUTH ======================
-        async function checkAuth() {
-            if (puter.auth.isSignedIn()) {
-                currentUser = await puter.auth.getUser();
-                await loadFromCloud();
-            }
-            renderUserPanel();
-            updateMemoryCount();
-        }
-
-        function renderUserPanel() {
-            userPanel.innerHTML = currentUser ?
-                `<div class="flex items-center gap-3 bg-zinc-800 rounded-3xl p-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-violet-500 rounded-2xl flex items-center justify-center text-xl font-bold">${currentUser.username?.[0].toUpperCase() || 'U'}</div>
-                    <div class="flex-1 min-w-0">
-                        <div class="font-semibold truncate">@${currentUser.username || 'user'}</div>
-                        <div class="text-xs text-emerald-400 flex items-center gap-1"><span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>Cloud synced</div>
-                    </div>
-                    <button onclick="signOut()" class="p-2 hover:bg-red-900/30 rounded-2xl text-red-400"><i class="fa-solid fa-right-from-bracket"></i></button>
-                </div>` :
-                `<button onclick="signIn()" class="w-full py-4 bg-gradient-to-r from-cyan-400 to-violet-500 hover:brightness-110 rounded-3xl font-bold flex items-center justify-center gap-3 transition-all btn-hover">
-                    <i class="fa-solid fa-right-to-bracket"></i> Sign in with Puter
-                </button>`;
-        }
-
-        async function signIn() { /* same as before */ 
-            try {
-                await puter.auth.signIn();
-                currentUser = await puter.auth.getUser();
-                await loadFromCloud();
-                renderUserPanel();
-                renderHistory();
-                updateMemoryCount();
-                alert("✅ Signed in! Everything is now cloud-synced.");
-            } catch(e) {}
-        }
-        async function signOut() {
-            await puter.auth.signOut();
-            currentUser = null;
-            renderUserPanel();
-        }
-
-        // ====================== MEMORY ======================
-        function updateMemoryCount() {
-            memoryCountEl.textContent = `${userMemories.length} memories saved`;
-        }
-
-        function renderMemoryList() {
-            const container = document.getElementById('memory-list');
-            container.innerHTML = userMemories.length === 0 ?
-                `<div class="text-center py-12 text-zinc-500">No memories yet.<br>Add something you want me to always remember.</div>` : '';
-
-            userMemories.forEach((mem, i) => {
-                const div = document.createElement('div');
-                div.className = "flex gap-3 items-center bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-3 group";
-                div.innerHTML = `
-                    <i class="fa-solid fa-brain text-cyan-400"></i>
-                    <div class="flex-1 text-sm">${mem}</div>
-                    <button onclick="deleteMemory(${i}); event.stopImmediatePropagation()" class="opacity-0 group-hover:opacity-100 text-red-400 hover:text-red-500">
-                        <i class="fa-solid fa-trash"></i>
-                    </button>`;
-                container.appendChild(div);
-            });
-        }
-
-        function addMemory(text) {
-            if (!text.trim()) return;
-            userMemories.unshift(text.trim());
-            updateMemoryCount();
+        function setTheme(theme) {
+            currentTheme = theme;
+            if (theme === 'dark') document.body.classList.remove('light');
+            else if (theme === 'light') document.body.classList.add('light');
+            else if (theme === 'auto') document.body.classList.toggle('light', window.matchMedia('(prefers-color-scheme: light)').matches);
             saveAll();
-            renderMemoryList();
         }
 
-        function addMemoryFromInput() {
-            const inp = document.getElementById('new-memory');
-            addMemory(inp.value);
-            inp.value = '';
+        function renderQuickPrompts() {
+            const container = document.getElementById('quick-prompts');
+            const prompts = ["Explain quantum computing", "Write a sci-fi story", "Plan a trip to Tokyo", "Help me learn Python", "Generate a cyberpunk city image"];
+            container.innerHTML = prompts.map(p => `<button onclick="useQuickPrompt('${p}')" class="quick-prompt bg-zinc-800 hover:bg-zinc-700 px-5 py-2 rounded-3xl text-sm whitespace-nowrap">${p}</button>`).join('');
         }
 
-        function deleteMemory(index) {
-            userMemories.splice(index, 1);
-            updateMemoryCount();
-            saveAll();
-            renderMemoryList();
+        function useQuickPrompt(text) {
+            input.value = text;
+            sendMessage();
         }
 
-        function clearMemories() {
-            if (confirm("Delete ALL persistent memories?")) {
-                userMemories = [];
-                updateMemoryCount();
-                saveAll();
-                renderMemoryList();
-            }
-        }
-
-        // ====================== SYSTEM PROMPT WITH MEMORY ======================
         function getSystemPrompt() {
-            let base = currentModel === "vetex-1.1" ?
-                "You are Vetex 1.1 — a super-intelligent, witty, truthful and extremely helpful personal AI. You always remember the user's persistent data. Use markdown, tables and emojis. Think step-by-step." :
-                "You are Vetex.AI – super-intelligent, witty, truthful.";
-
-            if (customInstructions.trim()) {
-                base += `\n\n=== USER CUSTOM INSTRUCTIONS ===\n${customInstructions}`;
-            }
-
-            if (userMemories.length > 0) {
-                base += `\n\n=== PERSISTENT USER DATA (ALWAYS REMEMBER THESE) ===\n` +
-                        userMemories.map((m, i) => `${i+1}. ${m}`).join('\n');
-            }
-
+            let base = "You are Vetex 1.4 Ultra — witty, truthful, extremely capable personal AI. You remember everything in the user's memory vault and can generate beautiful SFW images.";
+            if (customInstructions) base += "\n\nUser custom instructions: " + customInstructions;
+            if (userMemories.length) base += "\n\n=== PERSISTENT MEMORY ===\n" + userMemories.map((m,i) => `${i+1}. ${m}`).join('\n');
             return base;
         }
 
-        function getActualModel() {
-            return currentModel === "vetex-1.1" ? "x-ai/grok-4" : currentModel;
+        function renderMessages() {
+            messagesDiv.innerHTML = '';
+            const chat = chats.find(c => c.id === currentChatId);
+            if (!chat) return;
+            chat.messages.forEach((msg, idx) => {
+                const div = document.createElement('div');
+                div.className = `flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} message-bubble group`;
+                let html = msg.role === 'user' 
+                    ? `<div class="max-w-[75%] bg-zinc-800 rounded-3xl px-7 py-4 prose prose-invert">${marked.parse(msg.content)}</div>`
+                    : `<div class="max-w-[85%] flex gap-4">
+                        <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-violet-400 to-cyan-400 flex items-center justify-center text-white font-bold flex-shrink-0 mt-1">V</div>
+                        <div class="flex-1">
+                            <div class="prose prose-invert bg-zinc-900/70 rounded-3xl px-7 py-4">${marked.parse(msg.content)}</div>
+                            ${msg.imageSrc ? `<img src="${msg.imageSrc}" onclick="showImageLightbox('${msg.imageSrc}')" class="generated-image mt-4">` : ''}
+                            <div class="message-actions flex gap-4 mt-3 text-zinc-400">
+                                <button onclick="speakMessage(this)" class="hover:text-white"><i class="fa-solid fa-volume-high"></i></button>
+                                <button onclick="regenerateResponse(${idx})" class="hover:text-white"><i class="fa-solid fa-arrow-rotate-right"></i></button>
+                            </div>
+                        </div>
+                    </div>`;
+                div.innerHTML = html;
+                messagesDiv.appendChild(div);
+            });
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
-        // ====================== CHAT MANAGEMENT ======================
+        async function generateImage(prompt) {
+            const safePrompt = prompt + ", SFW, safe for work, family-friendly, no nudity, no violence, highly detailed, beautiful";
+            const chat = chats.find(c => c.id === currentChatId);
+            chat.messages.push({role: "user", content: `🎨 /image ${prompt}`});
+            renderMessages();
+            const loading = document.createElement('div');
+            loading.id = 'img-loading';
+            loading.innerHTML = `<div class="flex justify-start"><div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-violet-400 to-cyan-400 flex items-center justify-center text-white font-bold mt-1">V</div><div class="max-w-[85%] flex-1 bg-zinc-900/70 rounded-3xl px-7 py-4 text-purple-400">Generating your SFW image...</div></div>`;
+            messagesDiv.appendChild(loading);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            try {
+                const result = await puter.ai.txt2img(safePrompt, {model: "gpt-image-1.5", quality: "high"});
+                loading.remove();
+                chat.messages.push({role: "assistant", content: `✅ SFW Image: **${prompt}**`, imageSrc: result.src});
+                saveAll();
+                renderMessages();
+            } catch(e) {
+                loading.remove();
+                chat.messages.push({role: "assistant", content: "❌ Image generation failed."});
+                renderMessages();
+            }
+        }
+
+        function showImageGenModal() {
+            document.getElementById('image-gen-modal').classList.remove('hidden');
+            document.getElementById('image-gen-modal').classList.add('flex');
+        }
+        function hideImageGenModal() {
+            document.getElementById('image-gen-modal').classList.add('hidden');
+            document.getElementById('image-gen-modal').classList.remove('flex');
+        }
+        function generateImageFromModal() {
+            let prompt = document.getElementById('image-prompt').value.trim();
+            if (!prompt) return;
+            const style = document.getElementById('img-style').value;
+            if (style) prompt += `, ${style} style`;
+            hideImageGenModal();
+            generateImage(prompt);
+        }
+
+        function speakMessage(el) {
+            if (!ttsEnabled) return;
+            const text = el.parentElement.parentElement.querySelector('.prose').innerText;
+            const u = new SpeechSynthesisUtterance(text);
+            speechSynthesis.speak(u);
+        }
+
+        async function sendMessage() {
+            if (isProcessing) return;
+            let text = input.value.trim();
+            if (!text || !currentChatId) return;
+
+            isProcessing = true;
+            const chat = chats.find(c => c.id === currentChatId);
+
+            if (text.toLowerCase().startsWith('/image ')) {
+                const imgPrompt = text.substring(7);
+                input.value = '';
+                generateImage(imgPrompt);
+                isProcessing = false;
+                return;
+            }
+
+            chat.messages.push({role: "user", content: text});
+            if (autoTitle && chat.messages.length === 1) {
+                chat.title = text.length > 50 ? text.substring(0,47) + "..." : text;
+                document.getElementById('chat-title').textContent = chat.title;
+            }
+            input.value = '';
+            saveAll();
+            renderMessages();
+            renderHistory();
+
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'ai-loading';
+            loadingDiv.innerHTML = `<div class="flex justify-start message-bubble"><div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-violet-400 to-cyan-400 flex items-center justify-center text-white font-bold">V</div><div class="max-w-[85%] flex-1 prose prose-invert bg-zinc-900/70 rounded-3xl px-7 py-4"><span class="font-medium text-zinc-400">Vetex 1.4 Ultra is thinking</span><span class="loading-dots ml-2">...</span></div></div>`;
+            messagesDiv.appendChild(loadingDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            try {
+                const stream = await puter.ai.chat([{role:"system", content: getSystemPrompt()}, ...chat.messages], {model: currentModel === "vetex-1.4" ? "x-ai/grok-4" : currentModel, stream: true});
+                loadingDiv.remove();
+                const assistantMsg = {role: "assistant", content: ""};
+                chat.messages.push(assistantMsg);
+                renderMessages();
+                for await (const chunk of stream) {
+                    if (chunk?.text) {
+                        assistantMsg.content += chunk.text;
+                        renderMessages();
+                    }
+                }
+                if (ttsEnabled) {
+                    const u = new SpeechSynthesisUtterance(assistantMsg.content);
+                    speechSynthesis.speak(u);
+                }
+            } catch(e) {
+                loadingDiv.remove();
+                chat.messages.push({role: "assistant", content: "❌ Something went wrong. Try again."});
+                renderMessages();
+            }
+            saveAll();
+            isProcessing = false;
+        }
+
+        function regenerateResponse(idx) {
+            const chat = chats.find(c => c.id === currentChatId);
+            chat.messages = chat.messages.slice(0, idx);
+            renderMessages();
+            sendMessage();
+        }
+
+        function showImageLightbox(src) {
+            const div = document.createElement('div');
+            div.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.95);display:flex;align-items:center;justify-content:center;z-index:99999;';
+            div.innerHTML = `<img src="${src}" style="max-height:92vh;max-width:92vw;border-radius:24px;box-shadow:0 0 80px rgba(103,232,249,0.6);">`;
+            div.onclick = () => div.remove();
+            document.body.appendChild(div);
+        }
+
+        // Full chat management functions
         function newChat() {
             const id = 'chat-' + Date.now();
-            chats.unshift({
-                id,
-                title: "New Conversation",
-                messages: [],
-                model: currentModel,
-                createdAt: Date.now()
-            });
+            chats.unshift({id, title: "New Conversation", messages: [], model: currentModel, createdAt: Date.now()});
             currentChatId = id;
             saveAll();
             renderHistory();
@@ -512,223 +536,110 @@
             if (!chat) return;
             currentChatId = id;
             currentModel = chat.model || defaultModel;
-            modelSelect.value = currentModel;
-            chatTitleEl.textContent = chat.title;
-            updateModelBadge();
+            document.getElementById('model').value = currentModel;
+            document.getElementById('chat-title').textContent = chat.title;
             renderMessages();
             renderHistory();
         }
 
         function deleteCurrentChat() {
-            if (!currentChatId || !confirm("Delete this conversation?")) return;
+            if (!confirm("Delete this chat?")) return;
             chats = chats.filter(c => c.id !== currentChatId);
             saveAll();
-            chats.length ? loadChat(chats[0].id) : newChat();
+            if (chats.length) loadChat(chats[0].id);
+            else newChat();
             renderHistory();
         }
 
-        function renameChat(id) {
-            const chat = chats.find(c => c.id === id);
-            const newTitle = prompt("New title:", chat.title);
-            if (newTitle && newTitle.trim()) {
-                chat.title = newTitle.trim();
-                saveAll();
-                renderHistory();
-                if (id === currentChatId) chatTitleEl.textContent = newTitle.trim();
-            }
-        }
-
-        // ====================== RENDER ======================
         function renderHistory(filtered = null) {
-            const toRender = filtered || chats;
-            historyDiv.innerHTML = toRender.length === 0 ? `<div class="text-zinc-500 text-center py-12">No chats</div>` : '';
-            toRender.forEach(chat => {
+            const container = document.getElementById('history');
+            container.innerHTML = '';
+            const list = filtered || chats;
+            list.forEach(chat => {
                 const active = chat.id === currentChatId;
                 const el = document.createElement('div');
                 el.className = `group px-4 py-3.5 rounded-2xl flex items-center gap-3 cursor-pointer transition-all ${active ? 'history-item-active' : 'hover:bg-zinc-800'}`;
                 el.innerHTML = `
-                    <i class="fa-solid fa-message text-zinc-400 flex-shrink-0"></i>
+                    <i class="fa-solid fa-message text-zinc-400"></i>
                     <div class="flex-1 min-w-0">
                         <div class="font-medium text-sm truncate">${chat.title}</div>
-                        <div class="text-[10px] text-zinc-500">${new Date(chat.createdAt).toLocaleDateString('en-US', {month:'short', day:'numeric'})}</div>
+                        <div class="text-[10px] text-zinc-500">${new Date(chat.createdAt).toLocaleDateString()}</div>
                     </div>`;
                 el.onclick = () => loadChat(chat.id);
-                const actions = document.createElement('div');
-                actions.className = "opacity-0 group-hover:opacity-100 flex gap-1";
-                actions.innerHTML = `
-                    <button onclick="event.stopImmediatePropagation();renameChat('${chat.id}')" class="p-1.5 hover:bg-zinc-700 rounded-xl"><i class="fa-solid fa-pen text-xs"></i></button>
-                    <button onclick="event.stopImmediatePropagation();if(confirm('Delete?')){deleteChat('${chat.id}');}" class="p-1.5 hover:bg-red-900/50 rounded-xl text-red-400"><i class="fa-solid fa-trash text-xs"></i></button>`;
-                el.appendChild(actions);
-                historyDiv.appendChild(el);
+                container.appendChild(el);
             });
-        }
-
-        function deleteChat(id) {
-            chats = chats.filter(c => c.id !== id);
-            saveAll();
-            renderHistory();
-            if (currentChatId === id) chats.length ? loadChat(chats[0].id) : newChat();
         }
 
         function filterHistory() {
-            const term = historySearch.value.toLowerCase().trim();
+            const term = document.getElementById('history-search').value.toLowerCase();
             if (!term) return renderHistory();
-            renderHistory(chats.filter(c => c.title.toLowerCase().includes(term)));
-        }
-
-        function renderMessages() {
-            messagesDiv.innerHTML = '';
-            const chat = chats.find(c => c.id === currentChatId);
-            if (!chat) return;
-            chat.messages.forEach(msg => {
-                const div = document.createElement('div');
-                div.className = `flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} message-bubble`;
-                div.innerHTML = msg.role === 'user' ?
-                    `<div class="max-w-[80%] bg-zinc-800 rounded-3xl px-7 py-4 prose prose-invert">${marked.parse(msg.content)}</div>` :
-                    `<div class="max-w-[85%] flex gap-4">
-                        <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-violet-400 to-cyan-400 flex items-center justify-center text-white font-bold flex-shrink-0 mt-1">V</div>
-                        <div class="flex-1 prose prose-invert bg-zinc-900/70 rounded-3xl px-7 py-4">${marked.parse(msg.content)}</div>
-                    </div>`;
-                messagesDiv.appendChild(div);
-            });
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        }
-
-        // ====================== SEND MESSAGE ======================
-        async function sendMessage() {
-            if (isProcessing) return;
-            const text = input.value.trim();
-            if (!text || !currentChatId) return;
-
-            isProcessing = true;
-            const chat = chats.find(c => c.id === currentChatId);
-            chat.messages.push({ role: "user", content: text });
-
-            if (autoTitle && chat.messages.length === 1) {
-                chat.title = text.length > 45 ? text.substring(0, 42) + "..." : text;
-                chatTitleEl.textContent = chat.title;
-            }
-
-            input.value = '';
-            saveAll();
-            renderHistory();
-            renderMessages();
-
-            // Loading indicator
-            const loadingDiv = document.createElement('div');
-            loadingDiv.id = 'ai-loading';
-            loadingDiv.className = `flex justify-start message-bubble`;
-            loadingDiv.innerHTML = `
-                <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-violet-400 to-cyan-400 flex items-center justify-center text-white font-bold flex-shrink-0 mt-1">V</div>
-                <div class="max-w-[85%] flex-1 prose prose-invert bg-zinc-900/70 rounded-3xl px-7 py-4">
-                    <div class="flex items-center gap-3 text-zinc-400">
-                        <span class="font-medium">Vetex 1.1 is thinking</span>
-                        <span class="loading-dots flex gap-1 text-lg leading-none">
-                            <span>.</span><span>.</span><span>.</span>
-                        </span>
-                    </div>
-                </div>`;
-            messagesDiv.appendChild(loadingDiv);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-
-            const actualModel = getActualModel();
-            const systemPrompt = getSystemPrompt();
-            const apiMessages = [{ role: "system", content: systemPrompt }, ...chat.messages];
-
-            try {
-                const stream = await puter.ai.chat(apiMessages, { model: actualModel, stream: true });
-
-                document.getElementById('ai-loading').remove();
-
-                const assistantMsg = { role: "assistant", content: "" };
-                chat.messages.push(assistantMsg);
-                renderMessages();
-
-                for await (const chunk of stream) {
-                    if (chunk?.text) {
-                        assistantMsg.content += chunk.text;
-                        renderMessages();
-                    }
-                }
-            } catch (e) {
-                document.getElementById('ai-loading')?.remove();
-                chat.messages.push({ role: "assistant", content: "❌ Sorry, I couldn't reach the model right now." });
-                renderMessages();
-            }
-
-            saveAll();
-            renderMessages();
-            isProcessing = false;
-        }
-
-        // ====================== VOICE, SHARE, MODEL ======================
-        function toggleVoice() { /* same as original */ 
-            if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) return alert("Voice not supported.");
-            if (!recognition) {
-                recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-                recognition.lang = 'en-US';
-                recognition.onresult = e => { input.value = e.results[0][0].transcript; sendMessage(); };
-            }
-            isListening = !isListening;
-            document.getElementById('voice-btn').classList.toggle('text-red-500', isListening);
-            isListening ? recognition.start() : recognition.stop();
-        }
-
-        async function shareCurrentChat() {
-            const chat = chats.find(c => c.id === currentChatId);
-            if (!chat || chat.messages.length === 0) return alert("Nothing to share!");
-            const text = chat.messages.map(m => `${m.role === 'user' ? '👤 You' : '🌌 Vetex 1.1'}: ${m.content}`).join('\n\n');
-            await navigator.clipboard.writeText(text);
-            alert("✅ Chat copied to clipboard!");
+            const filtered = chats.filter(c => c.title.toLowerCase().includes(term));
+            renderHistory(filtered);
         }
 
         function changeModel() {
-            currentModel = modelSelect.value;
+            currentModel = document.getElementById('model').value;
             const chat = chats.find(c => c.id === currentChatId);
             if (chat) chat.model = currentModel;
             saveAll();
-            updateModelBadge();
         }
 
-        function updateModelBadge() {
-            const badge = document.getElementById('chat-model-badge');
-            badge.textContent = currentModel === "vetex-1.1" ? "Vetex 1.1" : "Custom";
-            badge.classList.toggle('hidden', currentModel !== "vetex-1.1");
+        function updateMemoryCount() {
+            document.getElementById('memory-count').textContent = `${userMemories.length} memories saved`;
         }
 
-        // ====================== SETTINGS ======================
+        function renderMemoryList() {
+            const container = document.getElementById('memory-list-settings');
+            container.innerHTML = '';
+            userMemories.forEach((mem, i) => {
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between bg-zinc-800 rounded-2xl px-5 py-3";
+                div.innerHTML = `<div class="flex-1">${mem}</div><button onclick="deleteMemory(${i})" class="text-red-400"><i class="fa-solid fa-trash"></i></button>`;
+                container.appendChild(div);
+            });
+        }
+
+        function addMemoryFromSettings() {
+            const val = document.getElementById('new-memory-input').value.trim();
+            if (!val) return;
+            userMemories.unshift(val);
+            updateMemoryCount();
+            renderMemoryList();
+            saveAll();
+            document.getElementById('new-memory-input').value = '';
+        }
+
+        function deleteMemory(i) {
+            userMemories.splice(i, 1);
+            updateMemoryCount();
+            renderMemoryList();
+            saveAll();
+        }
+
         function showSettings() {
-            settingsModal.classList.remove('hidden');
-            settingsModal.classList.add('flex');
+            document.getElementById('settings-modal').classList.remove('hidden');
+            document.getElementById('settings-modal').classList.add('flex');
             switchSettingsTab(0);
             renderMemoryList();
             document.getElementById('custom-instructions').value = customInstructions;
             document.getElementById('default-model').value = defaultModel;
             document.getElementById('auto-title').checked = autoTitle;
+            document.getElementById('tts-enabled').checked = ttsEnabled;
         }
 
         function hideSettings() {
-            settingsModal.classList.add('hidden');
-            settingsModal.classList.remove('flex');
+            document.getElementById('settings-modal').classList.add('hidden');
+            document.getElementById('settings-modal').classList.remove('flex');
         }
 
-        function switchSettingsTab(tab) {
-            currentSettingsTab = tab;
-            document.querySelectorAll('.settings-tab').forEach((el, i) => el.classList.toggle('hidden', i !== tab));
-            document.querySelectorAll('.tab-btn').forEach((el, i) => {
-                el.classList.toggle('border-b-2', i === tab);
-                el.classList.toggle('border-cyan-400', i === tab);
-                el.classList.toggle('text-cyan-400', i === tab);
-                el.classList.toggle('text-zinc-400', i !== tab);
-            });
+        function switchSettingsTab(n) {
+            document.querySelectorAll('.settings-tab').forEach((el,i) => el.classList.toggle('hidden', i !== n));
         }
 
-        function saveDefaultModel() {
-            defaultModel = document.getElementById('default-model').value;
-        }
-
+        function saveDefaultModel() { defaultModel = document.getElementById('default-model').value; }
         function saveSettings() {
             autoTitle = document.getElementById('auto-title').checked;
+            ttsEnabled = document.getElementById('tts-enabled').checked;
         }
 
         function saveAllSettings() {
@@ -739,25 +650,17 @@
             alert("✅ All settings saved!");
         }
 
-        function clearAllData() {
-            if (confirm("DELETE EVERYTHING permanently?")) {
-                localStorage.clear();
-                chats = []; userMemories = []; customInstructions = "";
-                newChat();
-                hideSettings();
-            }
+        function exportData() {
+            const data = {chats, userMemories, customInstructions};
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'vetex-ai-backup.json';
+            a.click();
         }
 
-        function exportChats() {
-            const dataStr = JSON.stringify({chats, userMemories, customInstructions}, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-            const link = document.createElement('a');
-            link.href = dataUri;
-            link.download = 'vetex-backup.json';
-            link.click();
-        }
-
-        function importChatsPrompt() {
+        function importDataPrompt() {
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = '.json';
@@ -774,50 +677,83 @@
                         renderHistory();
                         updateMemoryCount();
                         alert("✅ Backup imported successfully!");
-                    } catch(err) { alert("Invalid file"); }
+                    } catch(err) { alert("Invalid backup file"); }
                 };
                 reader.readAsText(file);
             };
             input.click();
         }
 
-        // ====================== KEYBOARD ======================
-        function handleKeyboard(e) {
-            if (e.key === '/' && document.activeElement.tagName !== "TEXTAREA") {
-                e.preventDefault(); input.focus();
-            }
-            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
-                e.preventDefault(); newChat();
-            }
-            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'v') {
-                e.preventDefault(); toggleVoice();
-            }
-            if ((e.ctrlKey || e.metaKey) && e.key === ',') {
-                e.preventDefault(); showSettings();
+        function clearAllData() {
+            if (confirm("Delete ALL data permanently?")) {
+                localStorage.clear();
+                chats = [];
+                userMemories = [];
+                customInstructions = "";
+                newChat();
+                hideSettings();
             }
         }
 
-        // ====================== INIT ======================
+        async function toggleVoiceInput() {
+            if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) return alert("Voice not supported in this browser");
+            if (!recognition) {
+                recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.lang = 'en-US';
+                recognition.onresult = e => {
+                    input.value = e.results[0][0].transcript;
+                    sendMessage();
+                };
+            }
+            recognition.start();
+        }
+
+        async function shareCurrentChat() {
+            const chat = chats.find(c => c.id === currentChatId);
+            if (!chat) return;
+            const text = chat.messages.map(m => `${m.role === 'user' ? 'You' : 'Vetex'}: ${m.content}`).join('\n\n');
+            await navigator.clipboard.writeText(text);
+            alert("✅ Chat copied to clipboard!");
+        }
+
+        function checkFileProtocol() {
+            if (window.location.protocol === 'file:') document.getElementById('file-warning').classList.remove('hidden');
+        }
+
+        function checkAuth() {
+            if (typeof puter !== 'undefined' && puter.auth.isSignedIn()) {
+                puter.auth.getUser().then(user => {
+                    currentUser = user;
+                    document.getElementById('user-panel').innerHTML = `<div class="flex items-center gap-3 bg-zinc-800 rounded-3xl p-3"><div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-violet-500 rounded-2xl flex items-center justify-center text-xl font-bold">${user.username[0].toUpperCase()}</div><div class="flex-1"><div class="font-semibold">@${user.username}</div><div class="text-xs text-emerald-400">Cloud synced</div></div></div>`;
+                });
+            } else {
+                document.getElementById('user-panel').innerHTML = `<button onclick="signIn()" class="w-full py-4 bg-gradient-to-r from-cyan-400 to-violet-500 hover:brightness-110 rounded-3xl font-bold">Sign in with Puter</button>`;
+            }
+        }
+
+        function signIn() {
+            puter.auth.signIn().then(() => checkAuth());
+        }
+
         function init() {
             checkFileProtocol();
             checkAuth();
-            marked.setOptions({ breaks: true, gfm: true });
-
+            marked.setOptions({breaks: true, gfm: true});
+            renderQuickPrompts();
             if (chats.length === 0) newChat();
             else loadChat(chats[0].id);
-
             renderHistory();
-            updateModelBadge();
             updateMemoryCount();
+            setTheme(currentTheme);
 
-            // Welcome message
+            // Welcome
             const chat = chats.find(c => c.id === currentChatId);
             if (chat && chat.messages.length === 0) {
                 setTimeout(() => {
-                    chat.messages.push({ role: "assistant", content: "Hello! 👋 I'm **Vetex 1.1** with persistent memory. I will always remember any data you add in Settings → Memory Vault.\n\nHow can I help you today? 🚀" });
+                    chat.messages.push({role: "assistant", content: "👋 Hello! I'm **Vetex 1.4 Ultra** — your personal super AI website.\n\nI remember everything you tell me, I can generate beautiful SFW images, speak out loud, and more.\n\nTry typing `/image a beautiful cyberpunk Tokyo at night` or click the wand icon! 🚀"});
                     renderMessages();
                     saveAll();
-                }, 600);
+                }, 500);
             }
 
             input.addEventListener('keydown', e => {
@@ -827,41 +763,41 @@
                 }
             });
 
-            document.addEventListener('keydown', handleKeyboard);
+            document.addEventListener('keydown', e => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); newChat(); }
+                if ((e.ctrlKey || e.metaKey) && e.key === ',') { e.preventDefault(); showSettings(); }
+                if ((e.ctrlKey || e.metaKey) && e.key === 'i') { e.preventDefault(); showImageGenModal(); }
+            });
 
-            console.log('%c✅ Vetex.AI 1.1 with Persistent Memory loaded!', 'color:#67e8f9; font-family:monospace');
+            console.log('%c✅ Vetex.AI v1.4 Ultra Website loaded successfully!', 'color:#67e8f9;font-size:14px;font-family:monospace');
         }
 
-        function checkFileProtocol() {
-            if (window.location.protocol === 'file:') fileWarning.classList.remove('hidden');
-        }
-
-        // Expose functions
+        // Expose all functions
         window.newChat = newChat;
         window.loadChat = loadChat;
         window.sendMessage = sendMessage;
-        window.toggleVoice = toggleVoice;
-        window.shareCurrentChat = shareCurrentChat;
-        window.signIn = signIn;
-        window.signOut = signOut;
-        window.changeModel = changeModel;
-        window.deleteCurrentChat = deleteCurrentChat;
-        window.renameChat = renameChat;
         window.showSettings = showSettings;
         window.hideSettings = hideSettings;
-        window.showHelp = () => helpModal.classList.remove('hidden','hidden') || helpModal.classList.add('flex');
-        window.hideHelp = () => helpModal.classList.add('hidden') || helpModal.classList.remove('flex');
-        window.exportChats = exportChats;
-        window.clearAllData = clearAllData;
-        window.filterHistory = filterHistory;
-        window.deleteChat = deleteChat;
-        window.addMemoryFromInput = addMemoryFromInput;
-        window.deleteMemory = deleteMemory;
-        window.clearMemories = clearMemories;
         window.switchSettingsTab = switchSettingsTab;
         window.saveAllSettings = saveAllSettings;
-        window.saveDefaultModel = saveDefaultModel;
-        window.importChatsPrompt = importChatsPrompt;
+        window.generateImageFromModal = generateImageFromModal;
+        window.showImageGenModal = showImageGenModal;
+        window.hideImageGenModal = hideImageGenModal;
+        window.setTheme = setTheme;
+        window.exportData = exportData;
+        window.importDataPrompt = importDataPrompt;
+        window.clearAllData = clearAllData;
+        window.addMemoryFromSettings = addMemoryFromSettings;
+        window.deleteMemory = deleteMemory;
+        window.toggleVoiceInput = toggleVoiceInput;
+        window.shareCurrentChat = shareCurrentChat;
+        window.changeModel = changeModel;
+        window.deleteCurrentChat = deleteCurrentChat;
+        window.filterHistory = filterHistory;
+        window.useQuickPrompt = useQuickPrompt;
+        window.speakMessage = speakMessage;
+        window.showImageLightbox = showImageLightbox;
+        window.signIn = signIn;
 
         window.onload = init;
     </script>
