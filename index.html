@@ -31,9 +31,10 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .typing { animation: typingBlink 1.2s infinite; }
+        .typing { animation: typingBlink 1.4s infinite; }
         @keyframes typingBlink {
-            50% { opacity: 0.4; }
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
         }
         
         /* Scrollbar */
@@ -73,6 +74,13 @@
             border-radius: 9999px;
             font-weight: 700;
         }
+        
+        /* Loading dots */
+        .loading-dots span {
+            animation: typingBlink 1.4s infinite;
+        }
+        .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
         
         /* Extra padding for mobile */
         @media (max-width: 768px) {
@@ -283,8 +291,7 @@
 
     <script>
         // ================================================
-        // Vetex.AI - Expanded Edition (~510 lines total)
-        // Built for everyone • Powered by Puter + Grok-4
+        // Vetex.AI - Expanded Edition with AI Loading Indicator
         // ================================================
 
         tailwind.config = { content: [] };
@@ -503,7 +510,7 @@
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
-        // ====================== SEND MESSAGE ======================
+        // ====================== SEND MESSAGE with LOADING ======================
         async function sendMessage() {
             if (isProcessing) return;
             const text = input.value.trim();
@@ -526,13 +533,38 @@
             renderHistory();
             renderMessages();
 
-            // AI Response
+            // ==================== SHOW LOADING INDICATOR ====================
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'ai-loading';
+            loadingDiv.className = `flex justify-start message-bubble`;
+            loadingDiv.innerHTML = `
+                <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-violet-400 to-cyan-400 flex items-center justify-center text-white font-bold flex-shrink-0 mt-1">V</div>
+                <div class="max-w-[85%] flex-1 prose prose-invert bg-zinc-900/70 rounded-3xl px-7 py-4">
+                    <div class="flex items-center gap-3 text-zinc-400">
+                        <span class="font-medium">Vetex 1.0 is thinking</span>
+                        <span class="loading-dots flex gap-1 text-lg leading-none">
+                            <span class="typing">.</span>
+                            <span class="typing">.</span>
+                            <span class="typing">.</span>
+                        </span>
+                    </div>
+                </div>
+            `;
+            messagesDiv.appendChild(loadingDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            // ==================== AI RESPONSE ====================
             const actualModel = getActualModel();
             const systemPrompt = getSystemPrompt();
             const apiMessages = [{ role: "system", content: systemPrompt }, ...chat.messages];
 
             try {
                 const stream = await puter.ai.chat(apiMessages, { model: actualModel, stream: true });
+                
+                // Remove loading
+                const loading = document.getElementById('ai-loading');
+                if (loading) loading.remove();
+
                 const assistantMsg = { role: "assistant", content: "" };
                 chat.messages.push(assistantMsg);
                 renderMessages();
@@ -544,7 +576,12 @@
                     }
                 }
             } catch (e) {
+                // Remove loading on error
+                const loading = document.getElementById('ai-loading');
+                if (loading) loading.remove();
+                
                 chat.messages.push({ role: "assistant", content: "❌ Vetex 1.0 is temporarily unavailable. Please try again later." });
+                renderMessages();
             }
 
             saveChats();
@@ -707,7 +744,7 @@
             document.addEventListener('keydown', handleKeyboard);
 
             // Tailwind script ready
-            console.log('%c✅ Vetex.AI 1.0 Expanded Edition loaded successfully!', 'color:#67e8f9; font-family:monospace');
+            console.log('%c✅ Vetex.AI 1.0 with AI Loading Indicator loaded successfully!', 'color:#67e8f9; font-family:monospace');
         }
 
         // Expose global functions
