@@ -3,106 +3,327 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vetex.AI - Super Intelligent AI</title>
-    <meta name="description" content="Vetex.AI - Your personal Grok-like super AI with cloud sync, chat sharing, voice input & real-time knowledge. Built for Moath in Dammam.">
+    <meta name="description" content="Vetex.AI - Your personal Grok-like super AI with cloud sync, chat sharing, voice input & real-time knowledge.">
     <meta property="og:title" content="Vetex.AI">
     <meta property="og:description" content="The most beautiful personal AI you own.">
     <meta property="og:url" content="https://jeffprogamer.github.io/Vetex.AI/">
+    <meta property="og:image" content="https://picsum.photos/id/1015/1200/630">
     <meta name="theme-color" content="#67e8f9">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌌%3C/text%3E%3C/svg%3E">
+    <link rel="manifest" href="manifest.json">
+    <title>Vetex.AI - Super Intelligent AI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://js.puter.com/v2/"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap');
+        
+        /* ====================== GLOBAL STYLES ====================== */
         body { font-family: 'Inter', system-ui, sans-serif; }
         .logo-font { font-family: 'Space Grotesk', sans-serif; }
-        .message-bubble { animation: fadeIn 0.3s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .prose pre { background: #18181b; border-radius: 12px; padding: 16px; overflow-x: auto; }
-        .custom-scroll::-webkit-scrollbar { width: 6px; } .custom-scroll::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 3px; }
+        
+        /* Smooth animations */
+        .message-bubble { animation: fadeInUp 0.4s cubic-bezier(0.23, 1, 0.32, 1) forwards; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .typing { animation: typingBlink 1.2s infinite; }
+        @keyframes typingBlink {
+            50% { opacity: 0.4; }
+        }
+        
+        /* Scrollbar */
+        .custom-scroll::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #22d3ee; border-radius: 9999px; }
+        .custom-scroll::-webkit-scrollbar-thumb:hover { background: #67e8f9; }
+        
+        /* Prose enhancements */
+        .prose pre { 
+            background: #18181b; 
+            border-radius: 16px; 
+            padding: 20px; 
+            overflow-x: auto; 
+            border: 1px solid #27272a;
+        }
+        .prose code { font-family: ui-monospace, monospace; }
+        
+        /* Glassmorphism effects */
+        .glass { backdrop-filter: blur(16px); }
+        
+        /* Sidebar active state glow */
+        .history-item-active {
+            background: linear-gradient(90deg, #18181b, #27272a);
+            box-shadow: 0 0 0 2px #67e8f9;
+        }
+        
+        /* Button hover scale */
+        .btn-hover { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        .btn-hover:hover { transform: scale(1.05); }
+        
+        /* Model badge */
+        .model-badge {
+            font-size: 10px;
+            padding: 1px 6px;
+            background: #22d3ee;
+            color: #0a0a0a;
+            border-radius: 9999px;
+            font-weight: 700;
+        }
+        
+        /* Extra padding for mobile */
+        @media (max-width: 768px) {
+            .sidebar { width: 280px; }
+        }
     </style>
 </head>
-<body class="bg-zinc-950 text-zinc-100 overflow-hidden h-screen flex">
-    <!-- Warning banner -->
-    <div id="file-warning" class="hidden fixed top-0 left-0 right-0 bg-amber-500 text-black py-3 text-center font-semibold z-50">
-        ⚠️ Sign-in & cloud save only work on http/https (not file://). Open via GitHub Pages or localhost.
+<body class="bg-zinc-950 text-zinc-100 overflow-hidden h-screen flex flex-col md:flex-row">
+
+    <!-- ====================== FILE PROTOCOL WARNING ====================== -->
+    <div id="file-warning" class="hidden fixed top-0 left-0 right-0 bg-amber-500 text-black py-3 text-center font-semibold z-[100] text-sm">
+        ⚠️ Sign-in &amp; cloud sync only work on http/https. Please open via GitHub Pages or localhost for full features.
     </div>
 
-    <!-- Sidebar -->
-    <div class="w-72 bg-zinc-900 border-r border-zinc-800 flex flex-col">
-        <div class="p-6 border-b border-zinc-800 flex items-center gap-3">
-            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-cyan-400 to-violet-500 flex items-center justify-center text-3xl font-bold logo-font shadow-xl">V</div>
-            <div>
-                <span class="logo-font text-4xl font-bold tracking-tighter bg-gradient-to-r from-cyan-300 to-violet-400 bg-clip-text text-transparent">Vetex</span>
-                <span class="block text-[10px] font-mono text-cyan-400 -mt-1 tracking-[4px]">.AI</span>
-            </div>
-        </div>
+    <!-- ====================== SIDEBAR ====================== -->
+    <div class="w-72 bg-zinc-900 border-r border-zinc-800 flex flex-col h-screen overflow-hidden">
         
+        <!-- Logo Header -->
+        <div class="p-6 border-b border-zinc-800 flex items-center gap-3">
+            <div class="w-11 h-11 rounded-3xl bg-gradient-to-br from-cyan-400 via-violet-500 to-fuchsia-500 flex items-center justify-center text-4xl font-bold logo-font shadow-2xl shadow-cyan-500/30">V</div>
+            <div class="leading-none">
+                <span class="logo-font text-4xl font-bold tracking-[-2px] bg-gradient-to-r from-cyan-300 via-violet-400 to-fuchsia-400 bg-clip-text text-transparent">Vetex</span>
+                <span class="block text-[11px] font-mono text-cyan-400 tracking-[3px] -mt-1">.AI</span>
+            </div>
+            <div class="ml-auto text-[10px] px-2.5 py-1 bg-emerald-500/10 text-emerald-400 rounded-full font-medium">v1.0</div>
+        </div>
+
+        <!-- New Chat Button -->
         <div class="p-4">
-            <button onclick="newChat()" class="w-full py-4 bg-white/10 hover:bg-white/20 rounded-3xl flex items-center justify-center gap-3 font-semibold transition-all active:scale-95">
-                <i class="fa-solid fa-plus"></i> New Conversation
+            <button onclick="newChat()" 
+                    class="w-full py-4 bg-gradient-to-r from-cyan-500 to-violet-500 hover:brightness-110 rounded-3xl flex items-center justify-center gap-3 font-semibold text-lg transition-all active:scale-95 btn-hover shadow-lg">
+                <i class="fa-solid fa-plus"></i> 
+                New Conversation
             </button>
         </div>
 
+        <!-- History Search -->
+        <div class="px-4 pb-2">
+            <div class="relative">
+                <input id="history-search" 
+                       onkeyup="filterHistory()" 
+                       type="text" 
+                       placeholder="Search chats..." 
+                       class="w-full bg-zinc-800 border border-zinc-700 focus:border-cyan-400 rounded-2xl py-3 px-5 text-sm outline-none">
+                <i class="fa-solid fa-magnifying-glass absolute right-4 top-3.5 text-zinc-500"></i>
+            </div>
+        </div>
+
+        <!-- Chat History -->
         <div class="flex-1 overflow-y-auto px-3 space-y-1 custom-scroll" id="history"></div>
 
+        <!-- Sidebar Footer / User Panel -->
         <div id="user-panel" class="mt-auto p-4 border-t border-zinc-800"></div>
+        
+        <!-- Extra Sidebar Links -->
+        <div class="p-4 border-t border-zinc-800 text-xs flex flex-col gap-2 text-zinc-400">
+            <button onclick="showSettings()" class="flex items-center gap-2 hover:text-white transition-colors">
+                <i class="fa-solid fa-cog"></i> Settings
+            </button>
+            <button onclick="showHelp()" class="flex items-center gap-2 hover:text-white transition-colors">
+                <i class="fa-solid fa-circle-question"></i> Help &amp; Shortcuts
+            </button>
+            <button onclick="exportChats()" class="flex items-center gap-2 hover:text-white transition-colors">
+                <i class="fa-solid fa-download"></i> Export Chats
+            </button>
+        </div>
     </div>
 
-    <!-- Main Area -->
-    <div class="flex-1 flex flex-col">
-        <div class="h-16 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur flex items-center px-8 justify-between">
+    <!-- ====================== MAIN CHAT AREA ====================== -->
+    <div class="flex-1 flex flex-col min-w-0">
+        
+        <!-- Top Bar -->
+        <div class="h-16 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur-lg flex items-center px-6 justify-between z-50 glass">
             <div class="flex items-center gap-4">
-                <div id="chat-title" class="font-semibold text-xl">Vetex.AI</div>
+                <div id="chat-title" class="font-semibold text-xl tracking-tight">Vetex.AI</div>
+                <span id="chat-model-badge" class="model-badge hidden">Vetex 1.0</span>
             </div>
-            <div class="flex items-center gap-6">
-                <select id="model" onchange="changeModel()" class="bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-2 text-sm focus:outline-none focus:border-cyan-400">
+            
+            <div class="flex items-center gap-6 text-xl">
+                <select id="model" onchange="changeModel()" 
+                        class="bg-zinc-800 border border-zinc-700 rounded-2xl px-5 py-2 text-sm focus:outline-none focus:border-cyan-400 cursor-pointer">
+                    <option value="vetex-1.0" selected>Vetex 1.0 (Flagship)</option>
                     <option value="x-ai/grok-4">Grok-4 (Max Power)</option>
                     <option value="x-ai/grok-4-fast">Grok-4 Fast</option>
                     <option value="deepseek/deepseek-r1">DeepSeek R1</option>
                     <option value="openai/gpt-4o">GPT-4o (via Puter)</option>
                 </select>
-                <button onclick="toggleVoice()" id="voice-btn" class="text-cyan-400 hover:text-white"><i class="fa-solid fa-microphone text-xl"></i></button>
-                <button onclick="shareCurrentChat()" class="text-cyan-400 hover:text-white"><i class="fa-solid fa-share-nodes text-xl"></i></button>
-                <button onclick="deleteCurrentChat()" class="text-red-400 hover:text-red-500"><i class="fa-solid fa-trash text-xl"></i></button>
+                
+                <button onclick="toggleVoice()" id="voice-btn" 
+                        class="text-cyan-400 hover:text-cyan-300 transition-colors">
+                    <i class="fa-solid fa-microphone"></i>
+                </button>
+                
+                <button onclick="shareCurrentChat()" 
+                        class="text-cyan-400 hover:text-cyan-300 transition-colors">
+                    <i class="fa-solid fa-share-nodes"></i>
+                </button>
+                
+                <button onclick="deleteCurrentChat()" 
+                        class="text-red-400 hover:text-red-500 transition-colors">
+                    <i class="fa-solid fa-trash"></i>
+                </button>
+                
+                <button onclick="showSettings()" 
+                        class="text-zinc-400 hover:text-white">
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
             </div>
         </div>
 
-        <div id="messages" class="flex-1 overflow-y-auto p-8 space-y-10 bg-[radial-gradient(at_bottom,#0a0a0a_0%,transparent_70%)] custom-scroll"></div>
+        <!-- Messages Area -->
+        <div id="messages" 
+             class="flex-1 overflow-y-auto p-8 md:p-10 space-y-12 bg-[radial-gradient(at_bottom,#0a0a0a_0%,transparent_80%)] custom-scroll">
+        </div>
 
+        <!-- Input Area -->
         <div class="p-6 border-t border-zinc-800 bg-zinc-900">
             <div class="max-w-4xl mx-auto relative">
-                <textarea id="input" rows="1" class="w-full bg-zinc-800 border border-zinc-700 focus:border-cyan-400 rounded-3xl py-6 px-8 text-lg resize-y min-h-[60px] max-h-[180px] outline-none pr-20" placeholder="Ask Vetex anything... (Shift+Enter for new line)"></textarea>
-                <button onclick="sendMessage()" class="absolute right-6 bottom-6 w-11 h-11 bg-gradient-to-br from-cyan-400 to-violet-500 rounded-2xl flex items-center justify-center hover:scale-110 transition-all shadow-2xl">
-                    <i class="fa-solid fa-paper-plane"></i>
+                <textarea id="input" rows="1" 
+                          class="w-full bg-zinc-800 border border-zinc-700 focus:border-cyan-400 rounded-3xl py-6 px-8 text-lg resize-y min-h-[68px] max-h-[200px] outline-none pr-24 leading-relaxed"
+                          placeholder="Message Vetex 1.0... (Shift + Enter for new line)"></textarea>
+                
+                <!-- Send Button -->
+                <button onclick="sendMessage()" 
+                        class="absolute right-5 bottom-5 w-12 h-12 bg-gradient-to-br from-cyan-400 to-violet-500 rounded-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all shadow-2xl shadow-cyan-500/50">
+                    <i class="fa-solid fa-paper-plane text-white text-xl"></i>
                 </button>
             </div>
-            <div class="text-center text-[10px] text-zinc-500 mt-4">Vetex.AI • Powered by Puter + Grok-4 • Built for Moath in Dammam 🌴</div>
+            
+            <!-- Footer info -->
+            <div class="text-center text-[10px] text-zinc-500 mt-5 flex items-center justify-center gap-6">
+                <span>Vetex.AI • Powered by Puter + Grok-4</span>
+                <span class="hidden md:inline">• Cloud synced when signed in</span>
+                <span onclick="showHelp()" class="cursor-pointer hover:text-cyan-400">Keyboard shortcuts</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================== SETTINGS MODAL ====================== -->
+    <div id="settings-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[200]">
+        <div class="bg-zinc-900 rounded-3xl w-full max-w-md mx-4 overflow-hidden">
+            <div class="p-6 border-b border-zinc-800 flex items-center justify-between">
+                <div class="text-xl font-semibold">Settings</div>
+                <button onclick="hideSettings()" class="text-2xl leading-none text-zinc-400 hover:text-white">×</button>
+            </div>
+            
+            <div class="p-6 space-y-8">
+                <!-- Theme -->
+                <div>
+                    <div class="text-sm text-zinc-400 mb-2">Appearance</div>
+                    <div class="flex gap-3">
+                        <button onclick="switchTheme(this)" data-theme="dark" 
+                                class="flex-1 py-3 bg-zinc-800 rounded-2xl text-center active:scale-95">Dark</button>
+                        <button onclick="switchTheme(this)" data-theme="light" 
+                                class="flex-1 py-3 bg-zinc-800 rounded-2xl text-center active:scale-95">Light</button>
+                    </div>
+                </div>
+                
+                <!-- Suggested Prompts -->
+                <div>
+                    <div class="text-sm text-zinc-400 mb-3">Suggested Prompts</div>
+                    <div class="grid grid-cols-2 gap-2 text-sm">
+                        <button onclick="useSuggestedPrompt(this)" class="bg-zinc-800 hover:bg-zinc-700 p-3 rounded-2xl text-left transition-colors">Explain quantum computing</button>
+                        <button onclick="useSuggestedPrompt(this)" class="bg-zinc-800 hover:bg-zinc-700 p-3 rounded-2xl text-left transition-colors">Write a sci-fi story</button>
+                        <button onclick="useSuggestedPrompt(this)" class="bg-zinc-800 hover:bg-zinc-700 p-3 rounded-2xl text-left transition-colors">Help me learn Python</button>
+                        <button onclick="useSuggestedPrompt(this)" class="bg-zinc-800 hover:bg-zinc-700 p-3 rounded-2xl text-left transition-colors">Plan a trip to Tokyo</button>
+                    </div>
+                </div>
+                
+                <!-- Clear data -->
+                <button onclick="clearAllData()" 
+                        class="w-full py-4 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-2xl font-medium transition-colors">
+                    Clear all local chats
+                </button>
+            </div>
+            
+            <div class="p-6 border-t border-zinc-800 flex justify-end">
+                <button onclick="hideSettings()" 
+                        class="px-8 py-3 bg-white/10 hover:bg-white/20 rounded-2xl">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================== HELP MODAL ====================== -->
+    <div id="help-modal" class="hidden fixed inset-0 bg-black/80 flex items-center justify-center z-[200]">
+        <div class="bg-zinc-900 rounded-3xl w-full max-w-lg mx-4 overflow-hidden">
+            <div class="p-6 border-b border-zinc-800 flex justify-between items-center">
+                <div class="text-xl font-semibold flex items-center gap-2">
+                    <i class="fa-solid fa-keyboard"></i> Keyboard Shortcuts
+                </div>
+                <button onclick="hideHelp()" class="text-3xl leading-none text-zinc-400">×</button>
+            </div>
+            <div class="p-6 space-y-6 text-sm">
+                <div class="grid grid-cols-2 gap-y-4 gap-x-8">
+                    <div class="flex justify-between"><span class="text-zinc-400">Send message</span><span class="font-mono">Enter</span></div>
+                    <div class="flex justify-between"><span class="text-zinc-400">New line</span><span class="font-mono">Shift + Enter</span></div>
+                    <div class="flex justify-between"><span class="text-zinc-400">New chat</span><span class="font-mono">Ctrl/Cmd + K</span></div>
+                    <div class="flex justify-between"><span class="text-zinc-400">Voice input</span><span class="font-mono">Ctrl/Cmd + Shift + V</span></div>
+                    <div class="flex justify-between"><span class="text-zinc-400">Focus input</span><span class="font-mono">/</span></div>
+                </div>
+                <div class="text-xs text-zinc-500 pt-4 border-t border-zinc-800">
+                    Vetex 1.0 is built on top of the most powerful models available through Puter.<br>
+                    All chats are saved locally + in cloud when signed in.
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+        // ================================================
+        // Vetex.AI - Expanded Edition (~510 lines total)
+        // Built for everyone • Powered by Puter + Grok-4
+        // ================================================
+
         tailwind.config = { content: [] };
 
+        // ====================== STATE ======================
         let chats = JSON.parse(localStorage.getItem('vetexChats')) || [];
         let currentChatId = null;
-        let currentModel = "x-ai/grok-4";
+        let currentModel = "vetex-1.0";
         let currentUser = null;
         let isListening = false;
         let recognition = null;
         let isProcessing = false;
+        let currentTheme = 'dark';
 
+        // DOM elements
         const messagesDiv = document.getElementById('messages');
         const historyDiv = document.getElementById('history');
         const userPanel = document.getElementById('user-panel');
         const input = document.getElementById('input');
         const fileWarning = document.getElementById('file-warning');
         const chatTitleEl = document.getElementById('chat-title');
+        const modelSelect = document.getElementById('model');
+        const settingsModal = document.getElementById('settings-modal');
+        const helpModal = document.getElementById('help-modal');
+        const historySearch = document.getElementById('history-search');
 
-        const SYSTEM_PROMPT = "You are Vetex.AI – super-intelligent, witty, truthful. You know everything. Be helpful and fun. User is Moath from Dammam. Use markdown.";
+        // ====================== PROMPTS ======================
+        function getSystemPrompt() {
+            if (currentModel === "vetex-1.0") {
+                return "You are Vetex 1.0 — the flagship super-intelligent AI. You are witty, truthful, extremely capable and always helpful. Use markdown, tables and emojis when appropriate. Think step-by-step for complex queries.";
+            }
+            return "You are Vetex.AI – super-intelligent, witty, truthful. You know everything. Be helpful and fun. Use markdown.";
+        }
 
+        function getActualModel() {
+            return currentModel === "vetex-1.0" ? "x-ai/grok-4" : currentModel;
+        }
+
+        // ====================== STORAGE ======================
         async function saveChats() {
             localStorage.setItem('vetexChats', JSON.stringify(chats));
             if (currentUser) {
@@ -118,6 +339,7 @@
             } catch(e) {}
         }
 
+        // ====================== AUTH ======================
         async function checkAuth() {
             if (puter.auth.isSignedIn()) {
                 currentUser = await puter.auth.getUser();
@@ -129,11 +351,16 @@
         function renderUserPanel() {
             userPanel.innerHTML = currentUser ? 
                 `<div class="flex items-center gap-3 bg-zinc-800 rounded-3xl p-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-violet-500 rounded-2xl flex items-center justify-center text-xl font-bold">${currentUser.username?.[0].toUpperCase() || 'M'}</div>
-                    <div class="flex-1 min-w-0"><div class="font-semibold truncate">@${currentUser.username || 'moath'}</div><div class="text-xs text-emerald-400">Cloud synced ✅</div></div>
-                    <button onclick="signOut()" class="text-zinc-400 hover:text-red-400"><i class="fa-solid fa-right-from-bracket"></i></button>
+                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-violet-500 rounded-2xl flex items-center justify-center text-xl font-bold">${currentUser.username?.[0].toUpperCase() || 'U'}</div>
+                    <div class="flex-1 min-w-0">
+                        <div class="font-semibold truncate">@${currentUser.username || 'user'}</div>
+                        <div class="text-xs text-emerald-400 flex items-center gap-1"><span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>Cloud synced</div>
+                    </div>
+                    <button onclick="signOut()" class="p-2 hover:bg-red-900/30 rounded-2xl text-red-400"><i class="fa-solid fa-right-from-bracket"></i></button>
                 </div>` :
-                `<button onclick="signIn()" class="w-full py-4 bg-gradient-to-r from-cyan-400 to-violet-500 hover:brightness-110 rounded-3xl font-bold flex items-center justify-center gap-3 transition-all"><i class="fa-solid fa-right-to-bracket"></i> Sign in with Puter</button><p class="text-center text-[10px] text-zinc-500 mt-2">Save chats forever & share</p>`;
+                `<button onclick="signIn()" class="w-full py-4 bg-gradient-to-r from-cyan-400 to-violet-500 hover:brightness-110 rounded-3xl font-bold flex items-center justify-center gap-3 transition-all btn-hover">
+                    <i class="fa-solid fa-right-to-bracket"></i> Sign in with Puter
+                </button>`;
         }
 
         async function signIn() { 
@@ -141,19 +368,37 @@
                 await puter.auth.signIn();
                 currentUser = await puter.auth.getUser();
                 await loadChatsFromCloud();
-                renderUserPanel(); renderHistory();
-                alert("✅ Signed in! Chats now saved in the cloud.");
-            } catch(e) { alert("Sign-in failed or blocked."); }
+                renderUserPanel(); 
+                renderHistory();
+                alert("✅ Signed in successfully! Your chats are now cloud-synced.");
+            } catch(e) { 
+                alert("Sign-in failed or was blocked by browser.");
+            }
         }
-        async function signOut() { await puter.auth.signOut(); currentUser = null; renderUserPanel(); }
 
+        async function signOut() { 
+            await puter.auth.signOut(); 
+            currentUser = null; 
+            renderUserPanel(); 
+        }
+
+        // ====================== FILE CHECK ======================
         function checkFileProtocol() {
-            if (window.location.protocol === 'file:') fileWarning.classList.remove('hidden');
+            if (window.location.protocol === 'file:') {
+                fileWarning.classList.remove('hidden');
+            }
         }
 
+        // ====================== CHAT MANAGEMENT ======================
         function newChat() {
             const id = 'chat-' + Date.now();
-            chats.unshift({ id, title: "New Conversation", messages: [], model: currentModel, createdAt: Date.now() });
+            chats.unshift({
+                id, 
+                title: "New Conversation", 
+                messages: [], 
+                model: currentModel, 
+                createdAt: Date.now()
+            });
             currentChatId = id;
             saveChats();
             renderHistory();
@@ -164,25 +409,27 @@
             const chat = chats.find(c => c.id === id);
             if (!chat) return;
             currentChatId = id;
-            currentModel = chat.model || currentModel;
-            document.getElementById('model').value = currentModel;
+            currentModel = chat.model || "vetex-1.0";
+            modelSelect.value = currentModel;
             chatTitleEl.textContent = chat.title;
+            updateModelBadge();
             renderMessages();
             renderHistory();
         }
 
         function deleteCurrentChat() {
-            if (!currentChatId || !confirm("Delete this chat forever?")) return;
+            if (!currentChatId || !confirm("Delete this entire conversation?")) return;
             chats = chats.filter(c => c.id !== currentChatId);
             saveChats();
-            chats.length ? loadChat(chats[0].id) : newChat();
+            if (chats.length) loadChat(chats[0].id);
+            else newChat();
             renderHistory();
         }
 
         function renameChat(id) {
             const chat = chats.find(c => c.id === id);
-            const newTitle = prompt("New title:", chat.title);
-            if (newTitle?.trim()) {
+            const newTitle = prompt("Rename chat:", chat.title);
+            if (newTitle && newTitle.trim()) {
                 chat.title = newTitle.trim();
                 saveChats();
                 renderHistory();
@@ -190,59 +437,87 @@
             }
         }
 
-        function renderHistory() {
-            historyDiv.innerHTML = chats.length === 0 ? 
-                `<div class="text-zinc-500 text-center py-12">No chats yet.<br>Click New Conversation</div>` : '';
+        // ====================== RENDER HISTORY ======================
+        function renderHistory(filteredChats = null) {
+            const toRender = filteredChats || chats;
+            historyDiv.innerHTML = toRender.length === 0 ? 
+                `<div class="text-zinc-500 text-center py-12 px-6">No chats found</div>` : '';
 
-            chats.forEach(chat => {
+            toRender.forEach(chat => {
                 const active = chat.id === currentChatId;
                 const el = document.createElement('div');
-                el.className = `group px-4 py-3 rounded-2xl flex items-center gap-3 cursor-pointer transition-all ${active ? 'bg-zinc-800 ring-1 ring-cyan-400/50' : 'hover:bg-zinc-800'}`;
+                el.className = `group px-4 py-3.5 rounded-2xl flex items-center gap-3 cursor-pointer transition-all ${active ? 'history-item-active' : 'hover:bg-zinc-800'}`;
                 el.innerHTML = `
-                    <i class="fa-solid fa-message text-zinc-400"></i>
+                    <i class="fa-solid fa-message text-zinc-400 flex-shrink-0"></i>
                     <div class="flex-1 min-w-0">
                         <div class="font-medium text-sm truncate">${chat.title}</div>
-                        <div class="text-[10px] text-zinc-500">${new Date(chat.createdAt).toLocaleDateString()}</div>
+                        <div class="text-[10px] text-zinc-500">${new Date(chat.createdAt).toLocaleDateString('en-US', {month:'short', day:'numeric'})}</div>
                     </div>
                     <div class="opacity-0 group-hover:opacity-100 flex gap-1">
-                        <button onclick="event.stopImmediatePropagation();renameChat('${chat.id}')" class="p-1 hover:bg-zinc-700 rounded"><i class="fa-solid fa-pen text-xs"></i></button>
-                        <button onclick="event.stopImmediatePropagation();if(confirm('Delete?')){chats=chats.filter(c=>c.id!=='${chat.id}');saveChats();renderHistory();if('${chat.id}'===currentChatId)newChat();}" class="p-1 hover:bg-red-900/50 rounded text-red-400"><i class="fa-solid fa-trash text-xs"></i></button>
+                        <button onclick="event.stopImmediatePropagation();renameChat('${chat.id}')" class="p-1.5 hover:bg-zinc-700 rounded-xl"><i class="fa-solid fa-pen text-xs"></i></button>
+                        <button onclick="event.stopImmediatePropagation();if(confirm('Delete chat?')){deleteChat('${chat.id}');}" class="p-1.5 hover:bg-red-900/50 rounded-xl text-red-400"><i class="fa-solid fa-trash text-xs"></i></button>
                     </div>`;
                 el.onclick = () => loadChat(chat.id);
                 historyDiv.appendChild(el);
             });
         }
 
+        function deleteChat(id) {
+            chats = chats.filter(c => c.id !== id);
+            saveChats();
+            renderHistory();
+            if (currentChatId === id) {
+                chats.length ? loadChat(chats[0].id) : newChat();
+            }
+        }
+
+        function filterHistory() {
+            const term = historySearch.value.toLowerCase().trim();
+            if (!term) {
+                renderHistory();
+                return;
+            }
+            const filtered = chats.filter(chat => 
+                chat.title.toLowerCase().includes(term)
+            );
+            renderHistory(filtered);
+        }
+
+        // ====================== MESSAGES ======================
         function renderMessages() {
             messagesDiv.innerHTML = '';
             const chat = chats.find(c => c.id === currentChatId);
             if (!chat) return;
 
-            chat.messages.forEach((msg, i) => {
+            chat.messages.forEach((msg, index) => {
                 const div = document.createElement('div');
                 div.className = `flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} message-bubble`;
                 div.innerHTML = msg.role === 'user' ?
-                    `<div class="max-w-[75%] bg-zinc-800 rounded-3xl px-6 py-4 prose prose-invert">${marked.parse(msg.content)}</div>` :
-                    `<div class="max-w-[80%] flex gap-4">
-                        <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-violet-400 to-cyan-400 flex items-center justify-center text-white font-bold flex-shrink-0">V</div>
-                        <div class="flex-1 prose prose-invert bg-zinc-900 rounded-3xl px-6 py-4">${marked.parse(msg.content)}</div>
+                    `<div class="max-w-[80%] bg-zinc-800 rounded-3xl px-7 py-4 prose prose-invert">${marked.parse(msg.content)}</div>` :
+                    `<div class="max-w-[85%] flex gap-4">
+                        <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-violet-400 to-cyan-400 flex items-center justify-center text-white font-bold flex-shrink-0 mt-1">V</div>
+                        <div class="flex-1 prose prose-invert bg-zinc-900/70 rounded-3xl px-7 py-4">${marked.parse(msg.content)}</div>
                     </div>`;
                 messagesDiv.appendChild(div);
             });
             messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
 
+        // ====================== SEND MESSAGE ======================
         async function sendMessage() {
             if (isProcessing) return;
             const text = input.value.trim();
             if (!text || !currentChatId) return;
-            isProcessing = true;
 
-            let chat = chats.find(c => c.id === currentChatId);
+            isProcessing = true;
+            const chat = chats.find(c => c.id === currentChatId);
+            
+            // Add user message
             chat.messages.push({ role: "user", content: text });
 
+            // Auto title first message
             if (chat.messages.length === 1) {
-                chat.title = text.length > 38 ? text.substring(0, 35) + "..." : text;
+                chat.title = text.length > 40 ? text.substring(0, 37) + "..." : text;
                 chatTitleEl.textContent = chat.title;
             }
 
@@ -251,10 +526,13 @@
             renderHistory();
             renderMessages();
 
-            // Streaming AI response
-            const apiMessages = [{ role: "system", content: SYSTEM_PROMPT }, ...chat.messages];
+            // AI Response
+            const actualModel = getActualModel();
+            const systemPrompt = getSystemPrompt();
+            const apiMessages = [{ role: "system", content: systemPrompt }, ...chat.messages];
+
             try {
-                const stream = await puter.ai.chat(apiMessages, { model: currentModel, stream: true });
+                const stream = await puter.ai.chat(apiMessages, { model: actualModel, stream: true });
                 const assistantMsg = { role: "assistant", content: "" };
                 chat.messages.push(assistantMsg);
                 renderMessages();
@@ -266,7 +544,7 @@
                     }
                 }
             } catch (e) {
-                chat.messages.push({ role: "assistant", content: "❌ Sorry, AI is unavailable right now." });
+                chat.messages.push({ role: "assistant", content: "❌ Vetex 1.0 is temporarily unavailable. Please try again later." });
             }
 
             saveChats();
@@ -274,33 +552,125 @@
             isProcessing = false;
         }
 
+        // ====================== VOICE ======================
         function toggleVoice() {
-            if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) return alert("Voice not supported");
+            if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
+                return alert("Voice input is not supported in your browser.");
+            }
             if (!recognition) {
                 recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
                 recognition.lang = 'en-US';
-                recognition.onresult = e => { input.value = e.results[0][0].transcript; sendMessage(); };
+                recognition.continuous = false;
+                recognition.onresult = e => {
+                    input.value = e.results[0][0].transcript;
+                    sendMessage();
+                };
             }
             isListening = !isListening;
             document.getElementById('voice-btn').classList.toggle('text-red-500', isListening);
-            isListening ? recognition.start() : recognition.stop();
+            if (isListening) recognition.start();
+            else recognition.stop();
         }
 
+        // ====================== SHARE ======================
         async function shareCurrentChat() {
             const chat = chats.find(c => c.id === currentChatId);
-            if (!chat) return;
-            const text = chat.messages.map(m => `${m.role === 'user' ? '👤 You' : '🌌 Vetex'}: ${m.content}`).join('\n\n');
+            if (!chat || chat.messages.length === 0) return alert("Nothing to share yet!");
+            
+            const text = chat.messages.map(m => 
+                `${m.role === 'user' ? '👤 You' : '🌌 Vetex 1.0'}: ${m.content}`
+            ).join('\n\n');
+            
             await navigator.clipboard.writeText(text);
-            alert("✅ Chat copied to clipboard – paste anywhere!");
+            alert("✅ Full chat copied to clipboard! Paste anywhere.");
         }
 
         function changeModel() {
-            currentModel = document.getElementById('model').value;
+            currentModel = modelSelect.value;
             const chat = chats.find(c => c.id === currentChatId);
             if (chat) chat.model = currentModel;
             saveChats();
+            updateModelBadge();
         }
 
+        function updateModelBadge() {
+            const badge = document.getElementById('chat-model-badge');
+            if (currentModel === "vetex-1.0") {
+                badge.textContent = "Vetex 1.0";
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        }
+
+        // ====================== MODALS ======================
+        function showSettings() {
+            settingsModal.classList.remove('hidden');
+            settingsModal.classList.add('flex');
+        }
+        
+        function hideSettings() {
+            settingsModal.classList.add('hidden');
+            settingsModal.classList.remove('flex');
+        }
+
+        function showHelp() {
+            helpModal.classList.remove('hidden');
+            helpModal.classList.add('flex');
+        }
+        
+        function hideHelp() {
+            helpModal.classList.add('hidden');
+            helpModal.classList.remove('flex');
+        }
+
+        function switchTheme(btn) {
+            alert("Theme switch coming in future update! Currently only Dark mode is available.");
+        }
+
+        function useSuggestedPrompt(btn) {
+            hideSettings();
+            input.value = btn.textContent;
+            sendMessage();
+        }
+
+        function clearAllData() {
+            if (confirm("Delete ALL local chats permanently?")) {
+                localStorage.removeItem('vetexChats');
+                chats = [];
+                newChat();
+                hideSettings();
+            }
+        }
+
+        async function exportChats() {
+            const dataStr = JSON.stringify(chats, null, 2);
+            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+            const exportFileDefaultName = 'vetex-chats-backup.json';
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', exportFileDefaultName);
+            linkElement.click();
+            alert("✅ Chats exported as JSON!");
+        }
+
+        // ====================== KEYBOARD SHORTCUTS ======================
+        function handleKeyboard(e) {
+            if (e.key === '/' && document.activeElement.tagName !== "TEXTAREA") {
+                e.preventDefault();
+                input.focus();
+            }
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                newChat();
+            }
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'v') {
+                e.preventDefault();
+                toggleVoice();
+            }
+        }
+
+        // ====================== INIT ======================
         function init() {
             checkFileProtocol();
             checkAuth();
@@ -310,27 +680,58 @@
             else loadChat(chats[0].id);
 
             renderHistory();
+            updateModelBadge();
 
-            // Welcome message
+            // Welcome message for new users
             const chat = chats.find(c => c.id === currentChatId);
             if (chat && chat.messages.length === 0) {
                 setTimeout(() => {
-                    chat.messages.push({ role: "assistant", content: "Hello Moath from Dammam! 👋 I'm **Vetex.AI** – your personal Grok-4 super intelligence. What shall we explore today? 🚀" });
+                    chat.messages.push({ 
+                        role: "assistant", 
+                        content: "Hello! 👋 I'm **Vetex 1.0** — the most advanced personal AI. How can I help you today? 🚀" 
+                    });
                     renderMessages();
                     saveChats();
-                }, 600);
+                }, 650);
             }
 
-            // Enter key
-            input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+            // Input listeners
+            input.addEventListener('keydown', e => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            // Global keyboard
+            document.addEventListener('keydown', handleKeyboard);
+
+            // Tailwind script ready
+            console.log('%c✅ Vetex.AI 1.0 Expanded Edition loaded successfully!', 'color:#67e8f9; font-family:monospace');
         }
 
-        // Expose to window
-        window.newChat = newChat; window.loadChat = loadChat; window.sendMessage = sendMessage;
-        window.toggleVoice = toggleVoice; window.shareCurrentChat = shareCurrentChat;
-        window.signIn = signIn; window.signOut = signOut; window.changeModel = changeModel;
-        window.deleteCurrentChat = deleteCurrentChat; window.renameChat = renameChat;
+        // Expose global functions
+        window.newChat = newChat;
+        window.loadChat = loadChat;
+        window.sendMessage = sendMessage;
+        window.toggleVoice = toggleVoice;
+        window.shareCurrentChat = shareCurrentChat;
+        window.signIn = signIn;
+        window.signOut = signOut;
+        window.changeModel = changeModel;
+        window.deleteCurrentChat = deleteCurrentChat;
+        window.renameChat = renameChat;
+        window.showSettings = showSettings;
+        window.hideSettings = hideSettings;
+        window.showHelp = showHelp;
+        window.hideHelp = hideHelp;
+        window.exportChats = exportChats;
+        window.clearAllData = clearAllData;
+        window.useSuggestedPrompt = useSuggestedPrompt;
+        window.filterHistory = filterHistory;
+        window.deleteChat = deleteChat;
 
+        // Start the app
         window.onload = init;
     </script>
 </body>
