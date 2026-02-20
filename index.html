@@ -6,28 +6,31 @@
     <title>Vetex.AI - Super Intelligent AI</title>
     <meta name="description" content="Vetex.AI - Your personal Grok-like super AI with cloud sync, chat sharing, voice input & real-time knowledge. Built for Moath in Dammam.">
     <meta property="og:title" content="Vetex.AI">
-    <meta property="og:description" content="The most beautiful personal AI you own. Sign in, save chats forever, share with friends. Powered by Grok-4.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content=" https://jeffprogamer.github.io/Vetex.AI/">
+    <meta property="og:description" content="The most beautiful personal AI you own.">
+    <meta property="og:url" content="https://jeffprogamer.github.io/Vetex.AI/">
     <meta name="theme-color" content="#67e8f9">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🌌%3C/text%3E%3C/svg%3E">
-    <link rel="manifest" href="manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://js.puter.com/v2/"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap');
-        /* ... (keep ALL the style from your previous code exactly the same) */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap');
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .logo-font { font-family: 'Space Grotesk', sans-serif; }
+        .message-bubble { animation: fadeIn 0.3s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .prose pre { background: #18181b; border-radius: 12px; padding: 16px; overflow-x: auto; }
+        .custom-scroll::-webkit-scrollbar { width: 6px; } .custom-scroll::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 3px; }
     </style>
 </head>
 <body class="bg-zinc-950 text-zinc-100 overflow-hidden h-screen flex">
-    <!-- Warning banner for file:// -->
+    <!-- Warning banner -->
     <div id="file-warning" class="hidden fixed top-0 left-0 right-0 bg-amber-500 text-black py-3 text-center font-semibold z-50">
-        ⚠️ Sign-in only works on http://localhost – see instructions above!
+        ⚠️ Sign-in & cloud save only work on http/https (not file://). Open via GitHub Pages or localhost.
     </div>
 
-    <!-- Sidebar (same as before) -->
+    <!-- Sidebar -->
     <div class="w-72 bg-zinc-900 border-r border-zinc-800 flex flex-col">
         <div class="p-6 border-b border-zinc-800 flex items-center gap-3">
             <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-cyan-400 to-violet-500 flex items-center justify-center text-3xl font-bold logo-font shadow-xl">V</div>
@@ -43,12 +46,12 @@
             </button>
         </div>
 
-        <div class="flex-1 overflow-y-auto px-3 space-y-1" id="history"></div>
+        <div class="flex-1 overflow-y-auto px-3 space-y-1 custom-scroll" id="history"></div>
 
         <div id="user-panel" class="mt-auto p-4 border-t border-zinc-800"></div>
     </div>
 
-    <!-- Main Area (unchanged except share) -->
+    <!-- Main Area -->
     <div class="flex-1 flex flex-col">
         <div class="h-16 border-b border-zinc-800 bg-zinc-900/80 backdrop-blur flex items-center px-8 justify-between">
             <div class="flex items-center gap-4">
@@ -59,41 +62,46 @@
                     <option value="x-ai/grok-4">Grok-4 (Max Power)</option>
                     <option value="x-ai/grok-4-fast">Grok-4 Fast</option>
                     <option value="deepseek/deepseek-r1">DeepSeek R1</option>
+                    <option value="openai/gpt-4o">GPT-4o (via Puter)</option>
                 </select>
-                <button onclick="toggleVoice()" class="text-cyan-400 hover:text-white"><i class="fa-solid fa-microphone text-xl"></i></button>
-                <button onclick="shareCurrentChat()" class="text-cyan-400 hover:text-white"><i class="fa-solid fa-share text-xl"></i></button>
+                <button onclick="toggleVoice()" id="voice-btn" class="text-cyan-400 hover:text-white"><i class="fa-solid fa-microphone text-xl"></i></button>
+                <button onclick="shareCurrentChat()" class="text-cyan-400 hover:text-white"><i class="fa-solid fa-share-nodes text-xl"></i></button>
+                <button onclick="deleteCurrentChat()" class="text-red-400 hover:text-red-500"><i class="fa-solid fa-trash text-xl"></i></button>
             </div>
         </div>
 
-        <div id="messages" class="flex-1 overflow-y-auto p-8 space-y-10 bg-[radial-gradient(at_bottom,#0a0a0a_0%,transparent_70%)]"></div>
+        <div id="messages" class="flex-1 overflow-y-auto p-8 space-y-10 bg-[radial-gradient(at_bottom,#0a0a0a_0%,transparent_70%)] custom-scroll"></div>
 
         <div class="p-6 border-t border-zinc-800 bg-zinc-900">
             <div class="max-w-4xl mx-auto relative">
-                <textarea id="input" rows="1" class="w-full bg-zinc-800 border border-zinc-700 focus:border-cyan-400 rounded-3xl py-6 px-8 text-lg resize-y min-h-[60px] max-h-[180px] outline-none pr-20" placeholder="Ask Vetex anything..."></textarea>
+                <textarea id="input" rows="1" class="w-full bg-zinc-800 border border-zinc-700 focus:border-cyan-400 rounded-3xl py-6 px-8 text-lg resize-y min-h-[60px] max-h-[180px] outline-none pr-20" placeholder="Ask Vetex anything... (Shift+Enter for new line)"></textarea>
                 <button onclick="sendMessage()" class="absolute right-6 bottom-6 w-11 h-11 bg-gradient-to-br from-cyan-400 to-violet-500 rounded-2xl flex items-center justify-center hover:scale-110 transition-all shadow-2xl">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>
             </div>
-            <div class="text-center text-[10px] text-zinc-500 mt-3">Vetex.AI • Cloud sync when signed in</div>
+            <div class="text-center text-[10px] text-zinc-500 mt-4">Vetex.AI • Powered by Puter + Grok-4 • Built for Moath in Dammam 🌴</div>
         </div>
     </div>
 
     <script>
         tailwind.config = { content: [] };
+
         let chats = JSON.parse(localStorage.getItem('vetexChats')) || [];
         let currentChatId = null;
         let currentModel = "x-ai/grok-4";
         let currentUser = null;
         let isListening = false;
         let recognition = null;
+        let isProcessing = false;
 
         const messagesDiv = document.getElementById('messages');
         const historyDiv = document.getElementById('history');
         const userPanel = document.getElementById('user-panel');
         const input = document.getElementById('input');
         const fileWarning = document.getElementById('file-warning');
+        const chatTitleEl = document.getElementById('chat-title');
 
-        const SYSTEM = "You are Vetex.AI – super-intelligent, witty, truthful. You know everything. Be helpful and fun. User is Moath from Dammam. Use markdown.";
+        const SYSTEM_PROMPT = "You are Vetex.AI – super-intelligent, witty, truthful. You know everything. Be helpful and fun. User is Moath from Dammam. Use markdown.";
 
         async function saveChats() {
             localStorage.setItem('vetexChats', JSON.stringify(chats));
@@ -119,48 +127,209 @@
         }
 
         function renderUserPanel() {
-            if (currentUser) {
-                userPanel.innerHTML = `<div class="flex items-center gap-3 bg-zinc-800 rounded-3xl p-3"><div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-violet-500 rounded-2xl flex items-center justify-center text-xl font-bold">${currentUser.username ? currentUser.username[0].toUpperCase() : 'U'}</div><div class="flex-1 min-w-0"><div class="font-semibold truncate">@${currentUser.username || 'user'}</div><div class="text-xs text-zinc-500">Cloud synced ✅</div></div><button onclick="signOut()" class="text-zinc-400 hover:text-red-400"><i class="fa-solid fa-right-from-bracket"></i></button></div>`;
-            } else {
-                userPanel.innerHTML = `<button onclick="signIn()" class="w-full py-4 bg-gradient-to-r from-cyan-400 to-violet-500 hover:brightness-110 rounded-3xl font-bold flex items-center justify-center gap-3 transition-all"><i class="fa-solid fa-right-to-bracket"></i> Sign in with Puter</button><p class="text-center text-[10px] text-zinc-500 mt-2">Save chats forever & share with friends</p>`;
-            }
+            userPanel.innerHTML = currentUser ? 
+                `<div class="flex items-center gap-3 bg-zinc-800 rounded-3xl p-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-cyan-400 to-violet-500 rounded-2xl flex items-center justify-center text-xl font-bold">${currentUser.username?.[0].toUpperCase() || 'M'}</div>
+                    <div class="flex-1 min-w-0"><div class="font-semibold truncate">@${currentUser.username || 'moath'}</div><div class="text-xs text-emerald-400">Cloud synced ✅</div></div>
+                    <button onclick="signOut()" class="text-zinc-400 hover:text-red-400"><i class="fa-solid fa-right-from-bracket"></i></button>
+                </div>` :
+                `<button onclick="signIn()" class="w-full py-4 bg-gradient-to-r from-cyan-400 to-violet-500 hover:brightness-110 rounded-3xl font-bold flex items-center justify-center gap-3 transition-all"><i class="fa-solid fa-right-to-bracket"></i> Sign in with Puter</button><p class="text-center text-[10px] text-zinc-500 mt-2">Save chats forever & share</p>`;
         }
 
-        async function signIn() {
+        async function signIn() { 
             try {
                 await puter.auth.signIn();
                 currentUser = await puter.auth.getUser();
                 await loadChatsFromCloud();
-                renderUserPanel();
-                renderHistory();
-                alert("✅ Signed in! Your chats are now saved in the cloud.");
-            } catch (e) {
-                if (window.location.protocol === 'file:') {
-                    alert("❌ You are running on file://\n\nPlease run on http://localhost (see instructions at the top) and try again.");
-                } else {
-                    alert("Sign-in popup blocked or failed.\n\n1. Allow popups for this site\n2. Try again\n\nError: " + e.message);
-                }
-            }
+                renderUserPanel(); renderHistory();
+                alert("✅ Signed in! Chats now saved in the cloud.");
+            } catch(e) { alert("Sign-in failed or blocked."); }
         }
-
         async function signOut() { await puter.auth.signOut(); currentUser = null; renderUserPanel(); }
-
-        // Rest of the code (newChat, loadChat, renderHistory, renderMessages, sendMessage, etc.) is exactly the same as v2.0
-        // (I'm keeping it short here – just replace the whole file with the previous v2.0 code and ONLY update the signIn() function and add the file-warning div + the check below)
 
         function checkFileProtocol() {
             if (window.location.protocol === 'file:') fileWarning.classList.remove('hidden');
         }
 
-        async function init() {
+        function newChat() {
+            const id = 'chat-' + Date.now();
+            chats.unshift({ id, title: "New Conversation", messages: [], model: currentModel, createdAt: Date.now() });
+            currentChatId = id;
+            saveChats();
+            renderHistory();
+            loadChat(id);
+        }
+
+        function loadChat(id) {
+            const chat = chats.find(c => c.id === id);
+            if (!chat) return;
+            currentChatId = id;
+            currentModel = chat.model || currentModel;
+            document.getElementById('model').value = currentModel;
+            chatTitleEl.textContent = chat.title;
+            renderMessages();
+            renderHistory();
+        }
+
+        function deleteCurrentChat() {
+            if (!currentChatId || !confirm("Delete this chat forever?")) return;
+            chats = chats.filter(c => c.id !== currentChatId);
+            saveChats();
+            chats.length ? loadChat(chats[0].id) : newChat();
+            renderHistory();
+        }
+
+        function renameChat(id) {
+            const chat = chats.find(c => c.id === id);
+            const newTitle = prompt("New title:", chat.title);
+            if (newTitle?.trim()) {
+                chat.title = newTitle.trim();
+                saveChats();
+                renderHistory();
+                if (id === currentChatId) chatTitleEl.textContent = newTitle.trim();
+            }
+        }
+
+        function renderHistory() {
+            historyDiv.innerHTML = chats.length === 0 ? 
+                `<div class="text-zinc-500 text-center py-12">No chats yet.<br>Click New Conversation</div>` : '';
+
+            chats.forEach(chat => {
+                const active = chat.id === currentChatId;
+                const el = document.createElement('div');
+                el.className = `group px-4 py-3 rounded-2xl flex items-center gap-3 cursor-pointer transition-all ${active ? 'bg-zinc-800 ring-1 ring-cyan-400/50' : 'hover:bg-zinc-800'}`;
+                el.innerHTML = `
+                    <i class="fa-solid fa-message text-zinc-400"></i>
+                    <div class="flex-1 min-w-0">
+                        <div class="font-medium text-sm truncate">${chat.title}</div>
+                        <div class="text-[10px] text-zinc-500">${new Date(chat.createdAt).toLocaleDateString()}</div>
+                    </div>
+                    <div class="opacity-0 group-hover:opacity-100 flex gap-1">
+                        <button onclick="event.stopImmediatePropagation();renameChat('${chat.id}')" class="p-1 hover:bg-zinc-700 rounded"><i class="fa-solid fa-pen text-xs"></i></button>
+                        <button onclick="event.stopImmediatePropagation();if(confirm('Delete?')){chats=chats.filter(c=>c.id!=='${chat.id}');saveChats();renderHistory();if('${chat.id}'===currentChatId)newChat();}" class="p-1 hover:bg-red-900/50 rounded text-red-400"><i class="fa-solid fa-trash text-xs"></i></button>
+                    </div>`;
+                el.onclick = () => loadChat(chat.id);
+                historyDiv.appendChild(el);
+            });
+        }
+
+        function renderMessages() {
+            messagesDiv.innerHTML = '';
+            const chat = chats.find(c => c.id === currentChatId);
+            if (!chat) return;
+
+            chat.messages.forEach((msg, i) => {
+                const div = document.createElement('div');
+                div.className = `flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} message-bubble`;
+                div.innerHTML = msg.role === 'user' ?
+                    `<div class="max-w-[75%] bg-zinc-800 rounded-3xl px-6 py-4 prose prose-invert">${marked.parse(msg.content)}</div>` :
+                    `<div class="max-w-[80%] flex gap-4">
+                        <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-violet-400 to-cyan-400 flex items-center justify-center text-white font-bold flex-shrink-0">V</div>
+                        <div class="flex-1 prose prose-invert bg-zinc-900 rounded-3xl px-6 py-4">${marked.parse(msg.content)}</div>
+                    </div>`;
+                messagesDiv.appendChild(div);
+            });
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        async function sendMessage() {
+            if (isProcessing) return;
+            const text = input.value.trim();
+            if (!text || !currentChatId) return;
+            isProcessing = true;
+
+            let chat = chats.find(c => c.id === currentChatId);
+            chat.messages.push({ role: "user", content: text });
+
+            if (chat.messages.length === 1) {
+                chat.title = text.length > 38 ? text.substring(0, 35) + "..." : text;
+                chatTitleEl.textContent = chat.title;
+            }
+
+            input.value = '';
+            saveChats();
+            renderHistory();
+            renderMessages();
+
+            // Streaming AI response
+            const apiMessages = [{ role: "system", content: SYSTEM_PROMPT }, ...chat.messages];
+            try {
+                const stream = await puter.ai.chat(apiMessages, { model: currentModel, stream: true });
+                const assistantMsg = { role: "assistant", content: "" };
+                chat.messages.push(assistantMsg);
+                renderMessages();
+
+                for await (const chunk of stream) {
+                    if (chunk?.text) {
+                        assistantMsg.content += chunk.text;
+                        renderMessages();
+                    }
+                }
+            } catch (e) {
+                chat.messages.push({ role: "assistant", content: "❌ Sorry, AI is unavailable right now." });
+            }
+
+            saveChats();
+            renderMessages();
+            isProcessing = false;
+        }
+
+        function toggleVoice() {
+            if (!('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) return alert("Voice not supported");
+            if (!recognition) {
+                recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+                recognition.lang = 'en-US';
+                recognition.onresult = e => { input.value = e.results[0][0].transcript; sendMessage(); };
+            }
+            isListening = !isListening;
+            document.getElementById('voice-btn').classList.toggle('text-red-500', isListening);
+            isListening ? recognition.start() : recognition.stop();
+        }
+
+        async function shareCurrentChat() {
+            const chat = chats.find(c => c.id === currentChatId);
+            if (!chat) return;
+            const text = chat.messages.map(m => `${m.role === 'user' ? '👤 You' : '🌌 Vetex'}: ${m.content}`).join('\n\n');
+            await navigator.clipboard.writeText(text);
+            alert("✅ Chat copied to clipboard – paste anywhere!");
+        }
+
+        function changeModel() {
+            currentModel = document.getElementById('model').value;
+            const chat = chats.find(c => c.id === currentChatId);
+            if (chat) chat.model = currentModel;
+            saveChats();
+        }
+
+        function init() {
             checkFileProtocol();
-            await checkAuth();
-            // ... rest same as before
+            checkAuth();
+            marked.setOptions({ breaks: true, gfm: true });
+
             if (chats.length === 0) newChat();
             else loadChat(chats[0].id);
+
             renderHistory();
-            marked.setOptions({ breaks: true });
+
+            // Welcome message
+            const chat = chats.find(c => c.id === currentChatId);
+            if (chat && chat.messages.length === 0) {
+                setTimeout(() => {
+                    chat.messages.push({ role: "assistant", content: "Hello Moath from Dammam! 👋 I'm **Vetex.AI** – your personal Grok-4 super intelligence. What shall we explore today? 🚀" });
+                    renderMessages();
+                    saveChats();
+                }, 600);
+            }
+
+            // Enter key
+            input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
         }
+
+        // Expose to window
+        window.newChat = newChat; window.loadChat = loadChat; window.sendMessage = sendMessage;
+        window.toggleVoice = toggleVoice; window.shareCurrentChat = shareCurrentChat;
+        window.signIn = signIn; window.signOut = signOut; window.changeModel = changeModel;
+        window.deleteCurrentChat = deleteCurrentChat; window.renameChat = renameChat;
 
         window.onload = init;
     </script>
